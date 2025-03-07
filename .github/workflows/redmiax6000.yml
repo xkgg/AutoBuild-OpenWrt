@@ -5,7 +5,7 @@
 # Youtube Channel: https://goo.gl/fvkdwm 
 #=================================================
 
-name: Build_Redmi_AC2100
+name: Build_Redmi_AX6000
 
 # Add a button to trigger the workflow
 on: 
