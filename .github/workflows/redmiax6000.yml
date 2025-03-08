@@ -38,7 +38,7 @@ jobs:
         env: 
           REPO_URL: https://github.com/immortalwrt/immortalwrt
           REPO_BRANCH: v24.10.0
-          UPLOAD_BIN_DIR: false
+          UPLOAD_BIN_DIR: true
           UPLOAD_FIRMWARE: true
           UPLOAD_RELEASE: true
           
@@ -96,9 +96,10 @@ jobs:
         if: (!cancelled())
         run: df -hT
 
+
       - name: Upload bin directory
-        uses: actions/upload-artifact@main
-        if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
+        uses: actions/upload-artifact@latest
+        if: ${{ steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true' }}
         with:
           name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
           path: openwrt/bin
