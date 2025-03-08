@@ -61,7 +61,7 @@ jobs:
           [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
           chmod +x ./customize.sh && ./customize.sh
           chmod +x $GITHUB_WORKSPACE/patches/Plugins.sh
-          cd openwrt/package
+          cd ./openwrt/package
  
           $GITHUB_WORKSPACE/patches/Plugins.sh
           cd openwrt && make defconfig
