@@ -63,7 +63,7 @@ jobs:
           chmod +x $GITHUB_WORKSPACE/patches/Plugins.sh
 
           cd openwrt && make defconfig
-          cd openwrt/package
+          cd $GITHUB_WORKSPACE/openwrt/package
  
           $GITHUB_WORKSPACE/patches/Plugins.sh
    
