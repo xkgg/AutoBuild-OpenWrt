@@ -56,6 +56,7 @@ jobs:
       - name: Configuration Customization - Build_Redmi_AC2100
         env:
           CONFIG_FILE: 'redmi_ac2100.config'
+        working-directory: ./openwrt
         run: |
           rm -rf /package/feeds/luci/luci-app-openclash
           [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
