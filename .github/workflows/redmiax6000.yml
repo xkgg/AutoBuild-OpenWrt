@@ -38,6 +38,10 @@ jobs:
         env: 
           REPO_URL: https://github.com/immortalwrt/immortalwrt
           REPO_BRANCH: v24.10.0
+          UPLOAD_BIN_DIR: false
+          UPLOAD_FIRMWARE: true
+          UPLOAD_RELEASE: true
+          
         run: |
           git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
           cd openwrt
