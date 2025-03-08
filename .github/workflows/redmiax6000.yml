@@ -34,13 +34,6 @@ jobs:
           sudo mkdir -p /workdir
           sudo chown $USER:$GROUPS /workdir
    
-      
-      - name: Check Scripts
-        run: |
-          cd ./patches
-
-          chmod +x ./*.sh
-
       - name: Clone source code
         env: 
           REPO_URL: https://github.com/immortalwrt/immortalwrt
@@ -68,7 +61,7 @@ jobs:
           [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
           chmod +x ./customize.sh && ./customize.sh
           cd openwrt/package
-          chmod +x ./patches/Plugins.sh && ./patches/Plugins.sh
+          chmod +x ./Plugins.sh && ./Plugins.sh
           cd openwrt && make defconfig
 
       - name: Download package
