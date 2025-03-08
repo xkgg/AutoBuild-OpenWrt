@@ -64,7 +64,7 @@ jobs:
           cd openwrt/package
  
           $GITHUB_WORKSPACE/patches/Plugins.sh
-          make defconfig
+          cd && make defconfig
 
       - name: Download package
         working-directory: ./openwrt
