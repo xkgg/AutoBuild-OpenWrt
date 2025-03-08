@@ -14,5 +14,5 @@ sed -i 's/192.168.1.1/192.168.31.1/g' openwrt/package/base-files/files/bin/confi
 #3. Replace with JerryKuKu’s Argon
 #rm openwrt/package/lean/luci-theme-argon -rf
 #4. 修改wifi名字
-sed -i "s#ssid='[^']*'#ssid='Redmi_5A21'#g" ./package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+sed -i "s#ssid='[^']*'#ssid='Redmi_5A21'#g" openwrt/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 
