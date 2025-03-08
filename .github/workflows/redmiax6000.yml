@@ -41,6 +41,7 @@ jobs:
           UPLOAD_BIN_DIR: true
           UPLOAD_FIRMWARE: true
           UPLOAD_RELEASE: true
+
           
         run: |
           git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
@@ -121,8 +122,8 @@ jobs:
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: Upload firmware directory
-        uses: actions/upload-artifact@main
-        if: steps.organize.outputs.status == 'success' && !cancelled()
+        uses: actions/upload-artifact@latest
+        if: ${{ steps.organize.outputs.status == 'success' && !cancelled() }}
         with:
           name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
           path: ${{ env.FIRMWARE }}
@@ -133,17 +134,17 @@ jobs:
         run: |
           echo "release_tag=$(date +"%Y.%m.%d-x86_64-Include-Passwall2")" >> $GITHUB_OUTPUT
           touch release.txt
-          echo "X86-64 自用精简 Openwrt：" >> release.txt
-          echo "默认系统后台：192.168.123.1" >> release.txt
+          echo "Redmi-ax6000 自用精简 Openwrt：" >> release.txt
+          echo "默认系统后台：192.168.31.1" >> release.txt
           echo "账号：root" >> release.txt
-          echo "密码：password" >> release.txt
+          echo "密码：空" >> release.txt
           echo "编译的源码取自：https://github.com/coolsnowwolf/lede" >> release.txt
-          echo "集成插件：passwall 2、TTYD 终端" >> release.txt
+          echo "集成插件：openclash 2、TTYD 终端" >> release.txt
           echo "默认主题：Argon" >> release.txt
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: Upload firmware to release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
