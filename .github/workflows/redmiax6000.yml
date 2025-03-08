@@ -39,7 +39,6 @@ jobs:
         run: |
           cd ./patches
 
-          dos2unix ./*.sh
           chmod +x ./*.sh
 
       - name: Clone source code
