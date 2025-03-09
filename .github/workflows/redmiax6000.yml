@@ -141,7 +141,7 @@ jobs:
       - name: Generate release tag
         id: tag
         run: |
-          echo "release_tag=$(date +"%Y.%m.%d-redmiax6000")" >> $GITHUB_OUTPUT
+          echo "release_tag=$(date +"%y.%m.%d_%H.%M.%S-redmiax6000")" >> $GITHUB_OUTPUT
           touch release.txt
           echo "Redmi-ax6000 自用精简 Openwrt：" >> release.txt
           echo "默认系统后台：192.168.31.1" >> release.txt
