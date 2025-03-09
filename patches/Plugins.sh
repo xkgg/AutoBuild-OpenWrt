@@ -24,12 +24,7 @@ export CORE_DEV=https://github.com/vernesong/OpenClash/raw/core/dev/dev/clash-li
 export CORE_MATE=https://github.com/vernesong/OpenClash/raw/core/dev/meta/clash-linux
 
 #export CORE_TYPE=$(echo redmiax6000 | grep -Eiq "64|86" && echo "amd64" || echo "arm64")
-export CORE_TYPE=$(uname -m | 
-  case "${UNAME_M}" in
-    x86_64) echo "amd64" ;;
-    aarch64) echo "arm64" ;;
-    *) echo "unknown" ;;
-  end)
+export CORE_TYPE:arm64
 export TUN_VER=$(curl -sfL $CORE_VER | sed -n "2{s/\r$//;p;q}")
 
 export GEO_MMDB=https://github.com/alecthw/mmdb_china_ip_list/raw/release/lite/Country.mmdb
