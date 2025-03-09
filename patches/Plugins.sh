@@ -37,7 +37,9 @@ curl -sfL -o ./Country.mmdb $GEO_MMDB
 curl -sfL -o ./GeoSite.dat $GEO_SITE
 curl -sfL -o ./GeoIP.dat $GEO_IP
 
-mkdir ./core && cd ./core
+#mkdir ./core && cd ./core
+mkdir ./core
+cd ./core
 ls
 curl -sfL -o ./tun.gz "$CORE_TUN"-"$CORE_TYPE"-"$TUN_VER".gz
 gzip -d ./tun.gz && mv ./tun ./clash_tun
