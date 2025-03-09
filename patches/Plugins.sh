@@ -19,9 +19,9 @@ git clone --depth=1 --single-branch --branch "dev" https://github.com/vernesong/
 
 #预置OpenClash内核和GEO数据
 export CORE_VER=https://raw.githubusercontent.com/vernesong/OpenClash/core/dev/core_version
-export CORE_TUN=https://github.com/vernesong/OpenClash/tree/core/dev/premium
-export CORE_DEV=https://github.com/vernesong/OpenClash/tree/core/dev/dev
-export CORE_MATE=https://github.com/vernesong/OpenClash/tree/core/dev/meta
+export CORE_TUN=https://github.com/vernesong/OpenClash/tree/core/dev/premium/clash-linux
+export CORE_DEV=https://github.com/vernesong/OpenClash/tree/core/dev/dev/clash-linux
+export CORE_MATE=https://github.com/vernesong/OpenClash/tree/core/dev/meta/clash-linux
 
 export CORE_TYPE=$(echo redmiax6000 | grep -Eiq "64|86" && echo "amd64" || echo "arm64")
 
