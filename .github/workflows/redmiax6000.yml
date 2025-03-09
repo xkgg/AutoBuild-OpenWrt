@@ -65,9 +65,9 @@ jobs:
 
           cd openwrt && make defconfig
           cd $GITHUB_WORKSPACE/openwrt/package/feeds/luci
-          ls
+          #执行自定义插件
           $GITHUB_WORKSPACE/patches/Plugins.sh
-   
+          ls
 
       - name: Download package
         working-directory: ./openwrt
