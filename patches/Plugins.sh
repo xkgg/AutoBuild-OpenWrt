@@ -31,7 +31,7 @@ export GEO_MMDB=https://github.com/alecthw/mmdb_china_ip_list/raw/release/lite/C
 export GEO_SITE=https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geosite.dat
 export GEO_IP=https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geoip.dat
 
-cd ./OpenClash/luci-app-openclash/root/etc/openclash
+cd ./openwrt/package/feeds/luci/OpenClash/luci-app-openclash/root/etc/openclash
 
 curl -sfL -o ./Country.mmdb $GEO_MMDB
 curl -sfL -o ./GeoSite.dat $GEO_SITE
