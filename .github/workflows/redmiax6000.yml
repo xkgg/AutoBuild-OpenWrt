@@ -97,13 +97,17 @@ jobs:
         if: (!cancelled())
         run: df -hT
 
+        #软件包分类
+      - name: Package Firmware 
+        run: |
+          #在openwrt目录下创建目录为upload目录名
+          cd ./openwrt && mkdir ./upload
 
-      - name: Upload bin directory
-        uses: actions/upload-artifact@master
-        if: ${{ steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true' }}
-        with:
-          name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
-          path: openwrt/bin
+          rm -rf $(find ./bin/targets/ -iregex ".*\(json\|manifest\|buildinfo\|sha256sums\|packages\)$")
+          cp -rf $(find ./bin/targets/ -type f -iname "*.*") ./upload/
+          cp -rf ./.config ./upload/Config_"Redmi-ax6000"_"imm源码"_"$FILE_DATE".txt
+
+          cd ./upload
 
       - name: Organize files
         id: organize
@@ -130,9 +134,8 @@ jobs:
 
       - name: Generate release tag
         id: tag
-        if: env.UPLOAD_RELEASE == 'true' && !cancelled()
         run: |
-          echo "release_tag=$(date +"%Y.%m.%d-x86_64-Include-Passwall2")" >> $GITHUB_OUTPUT
+          echo "release_tag=$(date +"%Y.%m.%d-redmiax6000")" >> $GITHUB_OUTPUT
           touch release.txt
           echo "Redmi-ax6000 自用精简 Openwrt：" >> release.txt
           echo "默认系统后台：192.168.31.1" >> release.txt
@@ -142,15 +145,21 @@ jobs:
           echo "集成插件：openclash 2、TTYD 终端" >> release.txt
           echo "默认主题：Argon" >> release.txt
           echo "status=success" >> $GITHUB_OUTPUT
-
+          
+          #上传固件以发布
       - name: Upload firmware to release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.tag.outputs.release_tag }}
           body_path: release.txt
-          files: ${{ env.FIRMWARE }}/*
+          files: ./openwrt/upload/*.*
+
+
+
+
+
 
       - name: Delete workflow runs
         uses: GitRML/delete-workflow-runs@main
