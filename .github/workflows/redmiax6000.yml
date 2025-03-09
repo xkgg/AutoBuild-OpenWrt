@@ -53,21 +53,26 @@ jobs:
         run: |
           ./scripts/feeds update -a
           ./scripts/feeds install -a
-
+          
+      - name: 自定义设置类
+        working-directory: ./openwrt
+        run: |
+          #删除旧版openclash
+          rm -rf package/feeds/luci/luci-app-openclash
+          chmod +x ./customize.sh && ./customize.sh
+          chmod +x $GITHUB_WORKSPACE/patches/Plugins.sh
+          cd ./package
+          #执行自定义插件
+          $GITHUB_WORKSPACE/patches/Plugins.sh
+          ls
       - name: Configuration Customization - Build_Redmi_AC2100
         env:
           CONFIG_FILE: 'redmi_ac2100.config'
         run: |
-          rm -rf openwrt/package/feeds/luci/luci-app-openclash
           [ -e $CONFIG_FILE ] && mv -f $CONFIG_FILE openwrt/.config
-          chmod +x ./customize.sh && ./customize.sh
-          chmod +x $GITHUB_WORKSPACE/patches/Plugins.sh
 
           cd openwrt && make defconfig
-          cd $GITHUB_WORKSPACE/openwrt/package/feeds/luci
-          #执行自定义插件
-          $GITHUB_WORKSPACE/patches/Plugins.sh
-          ls
+          
 
       - name: Download package
         working-directory: ./openwrt
