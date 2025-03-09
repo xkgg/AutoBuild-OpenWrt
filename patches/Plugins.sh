@@ -39,7 +39,7 @@ curl -sfL -o ./GeoIP.dat $GEO_IP
 
 #mkdir ./core && cd ./core
 mkdir ./core
-cd ./core
+cd $GITHUB_WORKSPACE/openwrt/package/feeds/luci/OpenClash/luci-app-openclash/root/etc/openclash/core
 ls
 curl -sfL -o ./tun.gz "$CORE_TUN"-"$CORE_TYPE"-"$TUN_VER".gz
 gzip -d ./tun.gz && mv ./tun ./clash_tun
