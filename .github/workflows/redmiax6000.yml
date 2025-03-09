@@ -64,7 +64,7 @@ jobs:
           cd openwrt/package/feeds/luci
           #执行自定义插件
           $GITHUB_WORKSPACE/patches/Plugins.sh
-          ls
+
       - name: Configuration Customization - Build_Redmi_AC2100
         env:
           CONFIG_FILE: 'redmi_ac2100.config'
