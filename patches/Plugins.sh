@@ -47,12 +47,16 @@ chmod 0755 ./clash_tun
 curl -sfL -o ./meta.tar.gz "$CORE_MATE"
 tar -zxf ./meta.tar.gz && mv -f clash ./clash_meta
 chmod 0755 ./clash_meta
-
-
 echo "OpenClash core has been successfully integrated."
 
 curl -sfL -o ./dev.tar.gz "$CORE_DEV"
 tar -zxf ./dev.tar.gz
 find . -type f -exec chmod 0755 {} \;
-
 chmod +x ./clash* ; rm -rf ./*.gz
+
+rm cd $GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/frpc.config
+cd $GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files
+
+cat $GITHUB_WORKSPACE/patches/frpc.config
+
+
