@@ -19,7 +19,7 @@ git clone --depth=1 --single-branch --branch "dev" https://github.com/vernesong/
 
 #预置OpenClash内核和GEO数据
 export CORE_VER=https://raw.githubusercontent.com/vernesong/OpenClash/core/dev/core_version
-export TUN_VER=$(curl -sfL $CORE_VER | sed -n "2{s/\r$//;p}}")
+export TUN_VER=$(curl -sfL $CORE_VER | sed -n "2{s/\r$//;p;q}")
 export CORE_TUN=https://raw.githubusercontent.com/vernesong/OpenClash/core/master/premium/clash-linux-arm64-$TUN_VER.gz
 export CORE_DEV=https:/raw.githubusercontent.com/vernesong/OpenClash/core/master/dev/clash-linux-arm64.tar.gz
 export CORE_MATE=https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-arm64.tar.gz
