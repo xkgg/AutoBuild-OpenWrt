@@ -43,15 +43,9 @@ mkdir -p ./core && cd ./core
 curl -sfL -o ./tun.gz "$CORE_TUN"-"$CORE_TYPE"-"$TUN_VER".gz
 gzip -d ./tun.gz && mv ./tun ./clash_tun
 
-#curl -sfL -o ./meta.tar.gz "$CORE_MATE".tar.gz
+curl -sfL -o ./meta.tar.gz "$CORE_MATE".tar.gz
 # 4. 下载核心文件（带重试机制）
-curl -sfL -o ./meta.tar.gz "${CORE_MATE}.tar.gz" || {
-    echo "Download failed. Attempting retry..." >&2
-    for i in {1..3}; do
-        curl -sfL -o ./meta.tar.gz "${CORE_MATE}.tar.gz" && break
-    done
-    if [ $? -ne 0 ]; then exit 1
-}
+
 
 #tar -zxf ./meta.tar.gz && mv -f clash ./clash_meta
 tar -zxf ./meta.tar.gz && mv -f clash ./clash_meta || exit 1
