@@ -41,7 +41,7 @@ curl -sfL -o ./GeoIP.dat $GEO_IP
 mkdir -p ./core && cd ./core
 
 curl -sfL -o ./tun.gz "$CORE_TUN"-"$CORE_TYPE"-"$TUN_VER".gz
-gzip -d ./tun.gz && mv ./tun ./clash_tun
+#gzip -d ./tun.gz && mv ./tun ./clash_tun
 
 curl -sfL -o ./meta.tar.gz "$CORE_MATE".tar.gz
 # 4. 下载核心文件（带重试机制）
@@ -54,6 +54,6 @@ chmod 0755 ./clash_meta || exit 1
 echo "OpenClash core has been successfully integrated."
 
 curl -sfL -o ./dev.tar.gz "$CORE_DEV"-"$CORE_TYPE".tar.gz
-tar -zxf ./dev.tar.gz
+#tar -zxf ./dev.tar.gz
 
 chmod +x ./clash* ; rm -rf ./*.gz
