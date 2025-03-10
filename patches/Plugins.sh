@@ -32,20 +32,32 @@ export GEO_MMDB=https://github.com/alecthw/mmdb_china_ip_list/raw/release/lite/C
 export GEO_SITE=https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geosite.dat
 export GEO_IP=https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geoip.dat
 
-cd $GITHUB_WORKSPACE/openwrt/package/feeds/luci/OpenClash/luci-app-openclash/root/etc/openclash
+cd "$GITHUB_WORKSPACE/openwrt/package/feeds/luci/OpenClash/luci-app-openclash/root/etc/openclash" || exit 1
 
 curl -sfL -o ./Country.mmdb $GEO_MMDB
 curl -sfL -o ./GeoSite.dat $GEO_SITE
 curl -sfL -o ./GeoIP.dat $GEO_IP
 
-mkdir ./core && cd ./core
+mkdir -p ./core && cd ./core
 
 curl -sfL -o ./tun.gz "$CORE_TUN"-"$CORE_TYPE"-"$TUN_VER".gz
 gzip -d ./tun.gz && mv ./tun ./clash_tun
 
-curl -sfL -o ./meta.tar.gz "$CORE_MATE".tar.gz
-tar -zxf ./meta.tar.gz && mv -f clash ./clash_meta
-chmod 0755 ./clash_meta
+#curl -sfL -o ./meta.tar.gz "$CORE_MATE".tar.gz
+# 4. 下载核心文件（带重试机制）
+curl -sfL -o ./meta.tar.gz "${CORE_MATE}.tar.gz" || {
+    echo "Download failed. Attempting retry..." >&2
+    for i in {1..3}; do
+        curl -sfL -o ./meta.tar.gz "${CORE_MATE}.tar.gz" && break
+    done
+    if [ $? -ne 0 ]; then exit 1
+}
+
+#tar -zxf ./meta.tar.gz && mv -f clash ./clash_meta
+tar -zxf ./meta.tar.gz && mv -f clash ./clash_meta || exit 1
+chmod 0755 ./clash_meta || exit 1
+#chmod 0755 ./clash_meta
+echo "OpenClash core has been successfully integrated."
 
 curl -sfL -o ./dev.tar.gz "$CORE_DEV"-"$CORE_TYPE".tar.gz
 tar -zxf ./dev.tar.gz
