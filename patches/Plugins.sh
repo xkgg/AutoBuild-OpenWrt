@@ -43,7 +43,7 @@ mkdir -p ./core && cd ./core
 curl -sfL -o ./tun.gz "$CORE_TUN"-"$CORE_TYPE"-"$TUN_VER".gz
 #gzip -d ./tun.gz && mv ./tun ./clash_tun
 
-curl -sfL -o ./meta.tar.gz "$CORE_MATE".tar.gz
+curl -sfL -o ./meta.tar.gz "$CORE_MATE"
 # 4. 下载核心文件（带重试机制）
 
 ls
