@@ -48,8 +48,8 @@ curl -sfL -o ./meta.tar.gz "$CORE_MATE".tar.gz
 
 ls
 #tar -zxf ./meta.tar.gz && mv -f clash ./clash_meta
-tar -zxf ./meta.tar.gz && mv -f clash ./clash_meta || exit 1
-chmod 0755 ./clash_meta || exit 1
+tar -zxf ./meta.tar.gz && mv -f clash ./clash_meta
+chmod 0755 ./clash_meta
 #chmod 0755 ./clash_meta
 echo "OpenClash core has been successfully integrated."
 
