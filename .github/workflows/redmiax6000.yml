@@ -172,12 +172,11 @@ jobs:
 
 
       - name: Delete workflow runs
-        uses: actions/delete-workflow-runs@v3
+        uses: GitRML/delete-workflow-runs@main
         with:
-          days: 1
-          min_runs: 3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          retain_days: 1
+          keep_minimum_runs: 3
+
           
       - name: Remove old Releases
         uses: dev-drprasad/delete-older-releases@v0.1.0
