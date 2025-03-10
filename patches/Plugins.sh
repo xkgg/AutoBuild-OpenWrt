@@ -24,7 +24,7 @@ export CORE_TUN=https://raw.githubusercontent.com/vernesong/OpenClash/core/maste
 export CORE_DEV=https:/raw.githubusercontent.com/vernesong/OpenClash/core/master/dev/clash-linux-arm64.tar.gz
 export CORE_MATE=https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-arm64.tar.gz
 
-export CORE_TYPE=$(echo redmiax6000 | grep -Eiq "64|86" && echo "amd64" || echo "arm64")
+#export CORE_TYPE=$(echo redmiax6000 | grep -Eiq "64|86" && echo "amd64" || echo "arm64")
 
 
 
@@ -43,8 +43,9 @@ mkdir ./core && cd ./core
 curl -sfL -o ./tun.gz "$CORE_TUN"-"$CORE_TYPE"-"$TUN_VER".gz
 gzip -d ./tun.gz && mv ./tun ./clash_tun
 
-curl -sfL -o ./meta.tar.gz "$CORE_MATE"-"$CORE_TYPE".tar.gz
-tar -zxf ./meta.tar.gz && mv ./clash ./clash_meta
+curl -sfL -o ./meta.tar.gz "$CORE_MATE".tar.gz
+tar -zxf ./meta.tar.gz && mv -f clash ./clash_meta
+chmod 0755 ./clash_meta
 
 curl -sfL -o ./dev.tar.gz "$CORE_DEV"-"$CORE_TYPE".tar.gz
 tar -zxf ./dev.tar.gz
