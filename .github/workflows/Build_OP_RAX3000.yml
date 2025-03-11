@@ -14,8 +14,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
+    runs-on: ubuntu-22.04
     steps:
     - name: Checkout
       uses: actions/checkout@master
@@ -35,8 +34,8 @@ jobs:
           sudo chown $USER:$GROUPS /workdir
     - name: Clone source code
       env: 
-        REPO_URL: https://github.com/coolsnowwolf/lede
-        REPO_BRANCH: master
+        REPO_URL: https://github.com/openwrt/openwrt.git
+        REPO_BRANCH: v24.10.0
       run: |
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
         cd openwrt
