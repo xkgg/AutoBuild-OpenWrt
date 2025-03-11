@@ -54,7 +54,7 @@ tar -zxf ./dev.tar.gz
 find . -type f -exec chmod 0755 {} \;
 chmod +x ./clash* ; rm -rf ./*.gz
 
-rm cd $GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/frpc.config
+rm $GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/frpc.config
 cd $GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files
 
 cat $GITHUB_WORKSPACE/patches/frpc.config
