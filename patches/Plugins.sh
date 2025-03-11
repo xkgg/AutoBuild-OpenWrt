@@ -58,5 +58,6 @@ rm cd $GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/frpc.config
 cd $GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files
 
 cat $GITHUB_WORKSPACE/patches/frpc.config
+chmod 0755 ./frpc.config
 
 
