@@ -40,18 +40,12 @@ curl -sfL -o ./GeoIP.dat $GEO_IP
 
 mkdir -p ./core && cd ./core
 
-curl -sfL -o ./tun.gz "$CORE_TUN"-"$TUN_VER".gz
-gzip -d ./tun.gz && mv ./tun ./clash_tun
-chmod 0755 ./clash_tun
-
 curl -sfL -o ./meta.tar.gz "$CORE_MATE"
 tar -zxf ./meta.tar.gz && mv -f clash ./clash_meta
 chmod 0755 ./clash_meta
 echo "OpenClash core has been successfully integrated."
 
-curl -sfL -o ./dev.tar.gz "$CORE_DEV"
-tar -zxf ./dev.tar.gz
-find . -type f -exec chmod 0755 {} \;
+
 chmod +x ./clash* ; rm -rf ./*.gz
 
 rm $GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/frpc.config
