@@ -70,7 +70,7 @@ jobs:
 
           cd openwrt && make defconfig
           ls
-          cd openwrt/package/feeds/luci
+          cd package/feeds/luci
           #执行自定义插件
           $GITHUB_WORKSPACE/patches/Plugins.sh
 
