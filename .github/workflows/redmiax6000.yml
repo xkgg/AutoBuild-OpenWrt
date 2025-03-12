@@ -60,9 +60,7 @@ jobs:
           chmod +x ./customize.sh && ./customize.sh
           chmod +x $GITHUB_WORKSPACE/patches/Plugins.sh
           
-          cd openwrt/package/feeds/luci
-          #执行自定义插件
-          $GITHUB_WORKSPACE/patches/Plugins.sh
+
 
       - name: Configuration Customization - Build_Redmi_AC2100
         env:
@@ -71,7 +69,10 @@ jobs:
           [ -e $CONFIG_FILE ] && mv -f $CONFIG_FILE openwrt/.config
 
           cd openwrt && make defconfig
-          
+          ls
+          cd openwrt/package/feeds/luci
+          #执行自定义插件
+          $GITHUB_WORKSPACE/patches/Plugins.sh
 
       - name: Download package
         working-directory: ./openwrt
