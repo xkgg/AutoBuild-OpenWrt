@@ -25,7 +25,7 @@ export TUN_VER=$(curl -sfL $CORE_VER | sed -n "2{s/\r$//;p;q}")
 #export CORE_MATE=https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-arm64.tar.gz
 
 if [ "$(grep -c "^CONFIG_PACKAGE_luci-app-openclash=y$" $GITHUB_WORKSPACE/openwrt/.config)" -ne '0' ]; then
-    ARCHT="$(sed -n '/CONFIG_ARCH=/p' $GITHUB_WORKSPACE/openwrt/.config | sed -e 's/CONFIG_ARCH\=\"//' -e 's/\"//')}"
+    ARCHT="$(echo "CONFIG_ARCH=\"aarch64\"" | sed -n '/CONFIG_ARCH=/p' | sed -e 's/CONFIG_ARCH\=\"//' -e 's/\"//')"
     case "${ARCHT}" in
         aarch64)
             CORE_ARCH="linux-arm64"
