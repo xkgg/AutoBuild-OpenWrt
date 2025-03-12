@@ -25,14 +25,14 @@ export TUN_VER=$(curl -sfL $CORE_VER | sed -n "2{s/\r$//;p;q}")
 #export CORE_MATE=https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-arm64.tar.gz
 
 if [ "$(grep -c "^CONFIG_PACKAGE_luci-app-openclash=y$" $GITHUB_WORKSPACE/openwrt/.config)" -ne '0' ];then
-    ARCHT="$(sed -n '/CONFIG_ARCH=/p' .config | sed -e 's/CONFIG_ARCH\=\"//' -e 's/\"//')"
+    ARCHT="$(sed -n '/CONFIG_ARCH=/p' $GITHUB_WORKSPACE/openwrt/.config | sed -e 's/CONFIG_ARCH\=\"//' -e 's/\"//')"
     case "${ARCHT}" in
         aarch64)
             CORE_ARCH="linux-arm64"
             ;;
         arm)
-            if [ "$(grep -c "CONFIG_arm_" .config)" -ne '0' ];then
-                armv="$(sed -n '/CONFIG_arm_/p' .config | sed -e 's/CONFIG_arm_//' -e 's/=y//')"
+            if [ "$(grep -c "CONFIG_arm_" $GITHUB_WORKSPACE/openwrt/.config)" -ne '0' ];then
+                armv="$(sed -n '/CONFIG_arm_/p' $GITHUB_WORKSPACE/openwrt/.config | sed -e 's/CONFIG_arm_//' -e 's/=y//')"
             else
                 armv=v5
             fi
