@@ -28,7 +28,7 @@ if [ "$(grep -c "^CONFIG_PACKAGE_luci-app-openclash=y$" $GITHUB_WORKSPACE/openwr
     git clone --depth=1 --single-branch --branch "dev" https://github.com/vernesong/OpenClash.git
     Archt="$(sed -n '/CONFIG_ARCH=/p' $GITHUB_WORKSPACE/openwrt/.config | sed -e 's/CONFIG_ARCH\=\"//' -e 's/\"//')"
     echo "架构为 $Archt 的openclash内核"
-    case "$ARCHT" in
+    case $ARCHT in
         aarch64)
             CORE_ARCH="linux-arm64"
             ;;
