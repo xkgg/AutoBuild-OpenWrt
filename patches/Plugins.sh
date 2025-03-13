@@ -16,7 +16,7 @@
 #git clone --depth=1 --single-branch --branch "main" https://github.com/xiaorouji/openwrt-passwall.git ./pw_luci
 #git clone --depth=1 --single-branch --branch "main" https://github.com/xiaorouji/openwrt-passwall-packages.git ./pw_packages
 #Open Clash
-#git clone --depth=1 --single-branch --branch "dev" https://github.com/vernesong/OpenClash.git
+#
 #预置OpenClash内核和GEO数据
 export CORE_VER=https://raw.githubusercontent.com/vernesong/OpenClash/core/dev/core_version
 export TUN_VER=$(curl -sfL $CORE_VER | sed -n "2{s/\r$//;p;q}")
@@ -25,6 +25,7 @@ export TUN_VER=$(curl -sfL $CORE_VER | sed -n "2{s/\r$//;p;q}")
 #export CORE_MATE=https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-arm64.tar.gz
 
 if [ "$(grep -c "^CONFIG_PACKAGE_luci-app-openclash=y$" $GITHUB_WORKSPACE/openwrt/.config)" -ne '0' ]; then
+    git clone --depth=1 --single-branch --branch "dev" https://github.com/vernesong/OpenClash.git
     ARCHT="$(echo "CONFIG_ARCH=\"aarch64\"" | sed -n '/CONFIG_ARCH=/p' | sed -e 's/CONFIG_ARCH\=\"//' -e 's/\"//')"
     case "${ARCHT}" in
         aarch64)
