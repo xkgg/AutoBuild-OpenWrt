@@ -26,7 +26,7 @@ export TUN_VER=$(curl -sfL $CORE_VER | sed -n "2{s/\r$//;p;q}")
 
 if [ "$(grep -c "^CONFIG_PACKAGE_luci-app-openclash=y$" $GITHUB_WORKSPACE/openwrt/.config)" -ne '0' ]; then
     git clone --depth=1 --single-branch --branch "dev" https://github.com/vernesong/OpenClash.git
-    ARCHT="$(echo "CONFIG_ARCH=\"aarch64\"" | sed -n '/CONFIG_ARCH=/p' | sed -e 's/CONFIG_ARCH\=\"//' -e 's/\"//')"
+    Archt="$(sed -n '/CONFIG_ARCH=/p' $GITHUB_WORKSPACE/openwrt/.config | sed -e 's/CONFIG_ARCH\=\"//' -e 's/\"//')"
     case "${ARCHT}" in
         aarch64)
             CORE_ARCH="linux-arm64"
