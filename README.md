@@ -11,7 +11,7 @@ Hereby thank KFERMercer for his amazing job: https://github.com/KFERMercer/OpenW
 You could edit and enable "Sync Code" YAML file to let your forked repo keep updated.
 
 ## Usage
-   中文教程(https://p3terx.com/archives/build-openwrt-with-github-actions.html)
+   [中文教程](https://p3terx.com/archives/build-openwrt-with-github-actions.html)
    
 🔥🔥[Video Tutorial (in Mandrin) | 视频教程(国语)](https://youtu.be/9YO7nxNry-4)📺🎉
 
