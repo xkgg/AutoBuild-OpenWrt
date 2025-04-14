@@ -37,7 +37,7 @@ jobs:
       - name: Clone source code
         env: 
           REPO_URL: https://github.com/immortalwrt/immortalwrt
-          REPO_BRANCH: v24.10.0
+          REPO_BRANCH: v24.10.1
           UPLOAD_BIN_DIR: true
           UPLOAD_FIRMWARE: true
 
