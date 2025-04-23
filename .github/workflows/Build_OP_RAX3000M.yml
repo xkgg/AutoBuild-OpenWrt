@@ -11,6 +11,13 @@ name: Build_RAX3000M
 on: 
   repository_dispatch:
   workflow_dispatch:
+      inputs:
+         SSH_ACTION:
+           description: 'SSH远程配置固件'
+           required: false
+           default: 'false'
+           type: boolean
+    
 
 jobs:
   build:
@@ -77,6 +84,10 @@ jobs:
         chmod +x ./customize.sh && ./customize.sh
         cd openwrt && make defconfig
         
+    - name: SSH远程连接（make menuconfig）
+      if: env.SSH_ACTION == 'true'
+      uses: danshui-git/debugger-action@main
+    
     - name: Download package
       working-directory: ./openwrt
       run: |
