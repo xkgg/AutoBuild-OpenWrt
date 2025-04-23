@@ -77,7 +77,7 @@ jobs:
           #删除旧版openclash
           rm -rf openwrt/package/feeds/luci/luci-app-openclash
           chmod +x ./customize.sh && ./customize.sh
-          chmod +x $GITHUB_WORKSPACE/patches/Plugins.sh
+          chmod +x $GITHUB_WORKSPACE/patches/*.sh
           
           cd openwrt/package/feeds/luci
           #执行自定义插件
