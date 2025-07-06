@@ -85,7 +85,7 @@ jobs:
         cd openwrt && make defconfig
         
     - name: SSH远程连接（make menuconfig）
-      if: env.SSH_ACTION == 'true'
+      if: inputs.SSH_ACTION == 'true'
       uses: danshui-git/debugger-action@main
     
     - name: Download package
