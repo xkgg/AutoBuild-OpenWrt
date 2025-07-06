@@ -155,7 +155,7 @@ jobs:
     - name: Generate release tag
       id: tag
       run: |
-          echo "release_tag=$(date +"%y.%m.%d_%H.%M.%S-redmiax6000")" >> $GITHUB_OUTPUT
+          echo "release_tag=$(date +"%y.%m.%d_%H.%M.%S-Rax3000m")" >> $GITHUB_OUTPUT
           touch release.txt
           echo "Rax3000M 自用精简 openwrt：" >> release.txt
           echo "默认系统后台：192.168.10.1" >> release.txt
