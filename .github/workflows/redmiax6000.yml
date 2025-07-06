@@ -67,7 +67,10 @@ jobs:
         run: |
           ./scripts/feeds update -a
           ./scripts/feeds install -a
-          
+
+      - name: 将github存储库签出到运行器
+        uses: actions/checkout@v4
+
       - name: Configuration Customization - Build_Redmi_AC2100
         env:
           CONFIG_FILE: 'redmi_ac2100.config'
@@ -89,7 +92,7 @@ jobs:
           #删除旧版openclash
           ls
           rm -rf openwrt/package/feeds/luci/luci-app-openclash
-          cd ${GITHUB_WORKSPACE}
+
           ls
           chmod +x ./customize.sh && ./customize.sh
           chmod +x $GITHUB_WORKSPACE/patches/*.sh
