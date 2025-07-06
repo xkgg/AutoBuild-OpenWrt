@@ -68,9 +68,6 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
-      - name: 将github存储库签出到运行器
-        uses: actions/checkout@v4
-
       - name: Configuration Customization - Build_Redmi_AC2100
         env:
           CONFIG_FILE: 'redmi_ac2100.config'
@@ -86,10 +83,15 @@ jobs:
         if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
 #        env:
 #          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-#          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}          
+#          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}    
+
+      - name: 将github存储库签出到运行器
+        uses: actions/checkout@v4
+        
       - name: 自定义设置类
         run: |
           #删除旧版openclash
+
           ls
           rm -rf openwrt/package/feeds/luci/luci-app-openclash
 
