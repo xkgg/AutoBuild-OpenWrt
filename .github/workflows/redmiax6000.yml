@@ -201,9 +201,17 @@ jobs:
           body_path: release.txt
           files: ./openwrt/upload/*.*
 
-
-
-
+    
+      - name: 上传日志
+        if: success() || failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: openwrt-build-logs
+          path: |
+            openwrt/build_dir/​**​/*.log
+            openwrt/logs/*
+            openwrt/tmp/*.log
+#            retention-days: 3  # 可选，设置日志保留天数
 
 
       - name: Delete workflow runs
