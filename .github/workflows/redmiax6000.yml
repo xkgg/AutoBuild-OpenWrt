@@ -42,17 +42,17 @@ jobs:
           sudo chown $USER:$GROUPS /workdir
 
           
-#      - name: 合并磁盘 Disks
-#        uses: easimon/maximize-build-space@master
-#        with:
-#          swap-size-mb: 1024
-#          temp-reserve-mb: 100
-#          root-reserve-mb: 1024
+      - name: 合并磁盘 Disks
+        uses: easimon/maximize-build-space@master
+        with:
+          swap-size-mb: 1024
+          temp-reserve-mb: 100
+          root-reserve-mb: 1024
 
       - name: 设置immortalwrt源码地址，以及克隆
         env: 
           REPO_URL: https://github.com/immortalwrt/immortalwrt
-          REPO_BRANCH: v24.10.1
+          REPO_BRANCH: v24.10.2
           UPLOAD_BIN_DIR: true
           UPLOAD_FIRMWARE: true
 
