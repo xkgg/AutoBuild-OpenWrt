@@ -89,7 +89,7 @@ jobs:
           #删除旧版openclash
           ls
           rm -rf openwrt/package/feeds/luci/luci-app-openclash
-          cd ./$GITHUB_WORKSPACE
+          cd ${GITHUB_WORKSPACE}
           ls
           chmod +x ./customize.sh && ./customize.sh
           chmod +x $GITHUB_WORKSPACE/patches/*.sh
