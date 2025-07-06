@@ -117,5 +117,78 @@ jobs:
         name: OpenWrt_固件
         path: openwrt/bin/targets
 
+        #软件包分类
+    - name: Package Firmware 
+      run: |
+          #在openwrt目录下创建目录为upload目录名
+          cd ./openwrt && mkdir ./upload
 
+          rm -rf $(find ./bin/targets/ -iregex ".*\(json\|manifest\|buildinfo\|sha256sums\|packages\)$")
+          cp -rf $(find ./bin/targets/ -type f -iname "*.*") ./upload/
+          cp -rf ./.config ./upload/Config_"Rax3000"_"openwrt源码"_"$FILE_DATE".txt
+
+          cd ./upload
+
+    - name: Organize files
+      id: organize
+      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
+      run: |
+          cd
+          cd openwrt/bin/targets/*/*
+          rm -rf packages
+          rm -rf *.buildinfo
+          rm -rf sha256sums
+          rm -rf *.manifest
+          rm -rf *rootfs.img.gz
+          rm -rf *.json
+          rm -rf *.qcow2
+          echo "FIRMWARE=$PWD" >> $GITHUB_ENV
+          echo "status=success" >> $GITHUB_OUTPUT
+
+    - name: Upload firmware directory
+      uses: actions/upload-artifact@master
+      if: ${{ steps.organize.outputs.status == 'success' && !cancelled() }}
+      with:
+          name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+          path: ${{ env.FIRMWARE }}
+
+    - name: Generate release tag
+      id: tag
+      run: |
+          echo "release_tag=$(date +"%y.%m.%d_%H.%M.%S-redmiax6000")" >> $GITHUB_OUTPUT
+          touch release.txt
+          echo "Rax3000M 自用精简 openwrt：" >> release.txt
+          echo "默认系统后台：192.168.10.1" >> release.txt
+          echo "账号：root" >> release.txt
+          echo "密码：空" >> release.txt
+          echo "编译的源码取自：https://github.com/openwrt/openwrt" >> release.txt
+          echo "集成插件：1、openclash[集成Meta内核] 2、TTYD 终端 3、网络唤醒 4、frp客户端 5、frp服务端
+          6、alist 7、UPNP" >> release.txt
+          echo "默认主题：Argon" >> release.txt
+          echo "status=success" >> $GITHUB_OUTPUT
+          
+          #上传固件以发布
+    - name: Upload firmware to release
+      uses: softprops/action-gh-release@master
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          tag_name: ${{ steps.tag.outputs.release_tag }}
+          body_path: release.txt
+          files: ./openwrt/upload/*.*
+
+
+    - name: Delete workflow runs
+      uses: GitRML/delete-workflow-runs@main
+      with:
+        retain_days: 1
+        keep_minimum_runs: 3
+ 
+    - name: Remove old Releases
+      uses: dev-drprasad/delete-older-releases@v0.1.0
+      with:
+          keep_latest: 3
+          delete_tags: true
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
