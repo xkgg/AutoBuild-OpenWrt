@@ -127,6 +127,11 @@ jobs:
           grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
           [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
           echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
+#          获取固件架构
+          DEVICE_TARGET=$(cat .config | grep CONFIG_TARGET_BOARD | awk -F '"' '{print $2}')
+          echo "DEVICE_TARGET=$DEVICE_TARGET" >> $GITHUB_ENV
+          DEVICE_SUBTARGET=$(cat .config | grep CONFIG_TARGET_SUBTARGET | awk -F '"' '{print $2}')
+          echo "DEVICE_SUBTARGET=$DEVICE_SUBTARGET" >> $GITHUB_ENV
 
       - name: 固件上传 artifact
         uses: actions/upload-artifact@master
@@ -141,11 +146,13 @@ jobs:
           #在openwrt目录下创建目录为upload目录名
           cd ./openwrt && mkdir ./upload
 
-          rm -rf $(find ./bin/targets/ -iregex ".*\(json\|manifest\|buildinfo\|sha256sums\|packages\)$")
+          rm -rf $(find ./bin/targets/ -iregex ".*\(json\|buildinfo\|sha256sums\|packages\)$")
           cp -rf $(find ./bin/targets/ -type f -iname "*.*") ./upload/
           cp -rf ./.config ./upload/Config_"Redmi-ax6000"_"imm源码"_"$FILE_DATE".txt
-
+          cd /bin/targets/*/*
+          echo "KERNEL=$(cat *.manifest | grep ^kernel | cut -d- -f2 | tr -d ' ')" >> $GITHUB_ENV
           cd ./upload
+          echo "KERNEL=$(cat *.manifest | grep ^kernel | cut -d- -f2 | tr -d ' ')" >> $GITHUB_ENV
 
       - name: Organize files
         id: organize
@@ -156,7 +163,7 @@ jobs:
           rm -rf packages
           rm -rf *.buildinfo
           rm -rf sha256sums
-          rm -rf *.manifest
+#          rm -rf *.manifest
           rm -rf *rootfs.img.gz
           rm -rf *.json
           rm -rf *.qcow2
@@ -175,10 +182,13 @@ jobs:
         run: |
           echo "release_tag=$(date +"%Y.%m.%d_%H.%M.%S-redmiax6000")" >> $GITHUB_OUTPUT
           touch release.txt
-          echo "Redmi-ax6000 自用精简 immortalwrt：" >> release.txt
-          echo "默认系统后台：192.168.31.1" >> release.txt
+          echo "### 📒 固件信息" >> release.txt
+          echo "Redmi-ax6000 自用精简" >> release.txt
+          echo "- 💻 平台架构: ${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}" >> release.txt
+          echo "- 🚀 内核版本: ${{ env.KERNEL }}" >> release.txt
+          echo "- 🌐 默认地址: 192.168.31.1" >> release.txt
           echo "账号：root" >> release.txt
-          echo "密码：空" >> release.txt
+          echo "- 🔑 默认密码: 空 或者 password" >> release.txt
           echo "编译的源码取自：https://github.com/immortalwrt/immortalwrt" >> release.txt
           echo "集成插件：1、openclash[集成Meta内核] 2、TTYD 终端 3、网络唤醒 4、frp客户端 5、frp服务端
           6、alist 7、UPNP" >> release.txt
