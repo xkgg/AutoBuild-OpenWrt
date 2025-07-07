@@ -9,6 +9,8 @@ name: Build_RAX3000M
 
 # Add a button to trigger the workflow
 on: 
+  schedule:
+    - cron: '0 4 * * *'
   repository_dispatch:
   workflow_dispatch:
       inputs:
