@@ -163,7 +163,7 @@ jobs:
           rm -rf packages
           rm -rf *.buildinfo
           rm -rf sha256sums
-#          rm -rf *.manifest
+          #rm -rf *.manifest
           rm -rf *rootfs.img.gz
           rm -rf *.json
           rm -rf *.qcow2
