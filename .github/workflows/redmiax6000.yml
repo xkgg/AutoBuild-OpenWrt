@@ -134,15 +134,6 @@ jobs:
           name: OpenWrt
           path: openwrt/bin/targets
           
-      - name: 软件包上传 artifact
-        uses: actions/upload-artifact@master
-        with:
-          name: OpenWrt_packages
-          path: openwrt/bin/packages
-          
-      - name: Check space usage
-        if: (!cancelled())
-        run: df -hT
 
         #软件包分类
       - name: Package Firmware 
