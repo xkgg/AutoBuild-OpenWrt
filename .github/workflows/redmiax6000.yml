@@ -149,7 +149,7 @@ jobs:
           rm -rf $(find ./bin/targets/ -iregex ".*\(json\|buildinfo\|sha256sums\|packages\)$")
           cp -rf $(find ./bin/targets/ -type f -iname "*.*") ./upload/
           cp -rf ./.config ./upload/Config_"Redmi-ax6000"_"imm源码"_"$FILE_DATE".txt
-          cd ./openwrt/bin/targets/*/*
+          cd ./bin/targets/*/*
           echo "KERNEL=$(cat *.manifest | grep ^kernel | cut -d- -f2 | tr -d ' ')" >> $GITHUB_ENV
           cd ./upload
           echo "KERNEL=$(cat *.manifest | grep ^kernel | cut -d- -f2 | tr -d ' ')" >> $GITHUB_ENV
