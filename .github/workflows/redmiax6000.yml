@@ -151,7 +151,7 @@ jobs:
           cp -rf ./.config ./upload/Config_"Redmi-ax6000"_"imm源码"_"$FILE_DATE".txt
           cd ./bin/targets/*/*
           echo "KERNEL=$(cat *.manifest | grep ^kernel | cut -d- -f2 | tr -d ' ')" >> $GITHUB_ENV
-          cd ./upload
+          cd "$GITHUB_WORKSPACE/openwrt/upload"
           echo "KERNEL=$(cat *.manifest | grep ^kernel | cut -d- -f2 | tr -d ' ')" >> $GITHUB_ENV
 
       - name: Organize files
