@@ -188,7 +188,7 @@ jobs:
           echo "- 💻 平台架构: ${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}" >> release.txt
           echo "- 🚀 内核版本: ${{ env.KERNEL }}" >> release.txt
           echo "- 🌐 默认地址: 192.168.31.1" >> release.txt
-          echo "账号：root" >> release.txt
+          echo "- 👤 账号：root" >> release.txt
           echo "- 🔑 默认密码: 空 或者 password" >> release.txt
           echo "编译的源码取自：https://github.com/immortalwrt/immortalwrt" >> release.txt
           echo "集成插件：1、openclash[集成Meta内核] 2、TTYD 终端 3、网络唤醒 4、frp客户端 5、frp服务端
