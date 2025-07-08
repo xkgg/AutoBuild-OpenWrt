@@ -84,7 +84,8 @@ jobs:
           ls
           
       - name: SSH connection to Actions
-        uses: eyu-dev/debugger-action@master
+        #uses: eyu-dev/debugger-action@master
+        uses: danshui-git/debugger-action@main
 #        uses: danshui-git/debugger-action@main
         if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
 #        env:
