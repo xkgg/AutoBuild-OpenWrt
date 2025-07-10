@@ -63,7 +63,7 @@ if [ "$(grep -c "^CONFIG_PACKAGE_luci-app-openclash=y$" $GITHUB_WORKSPACE/openwr
     if [ "$CORE_ARCH" != "1" ]; then
         CPU_MODEL=$CORE_ARCH
         
-        export CORE_MATE=https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-$CPU_MODEL.tar.gz
+        export CORE_MATE=https://raw.githubusercontent.com/vernesong/OpenClash/core/dev/meta/clash-$CPU_MODEL.tar.gz
         export GEO_MMDB=https://github.com/alecthw/mmdb_china_ip_list/raw/release/lite/Country.mmdb
         export GEO_SITE=https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geosite.dat
         export GEO_IP=https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geoip.dat
