@@ -20,5 +20,5 @@ sed -i '15a option sequential_ip	1' openwrt/package/network/services/dnsmasq/fil
 #3. Replace with JerryKuKu’s Argon
 #rm openwrt/package/lean/luci-theme-argon -rf
 #4. 修改wifi名字
-#sed -i "s#ssid='[^']*'#ssid='Redmi_5A21'#g" openwrt/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+sed -i "s#ssid='[^']*'#ssid='Redmi_5A21'#g" openwrt/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 
