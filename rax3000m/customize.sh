@@ -9,7 +9,7 @@
 sed -i 's/192.168.1.1/192.168.10.1/g' openwrt/package/base-files/files/bin/config_generate
 #2. Modify default TZ 时区
 sed -i 's/UTC/CST-8/g' openwrt/package/base-files/files/bin/config_generate
-sed -i '315a set system.@system[-1].zonename=\'Asia/Shanghai\'' openwrt/package/base-files/files/bin/config_generate
+#sed -i '315a set system.@system[-1].zonename=\'Asia/Shanghai\'' openwrt/package/base-files/files/bin/config_generate
 
 
 sed -i '15a option sequential_ip	1' openwrt/package/network/services/dnsmasq/files/dhcp.conf
