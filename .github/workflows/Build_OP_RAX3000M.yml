@@ -103,7 +103,7 @@ jobs:
         CONFIG_FILE: 'rax3000openwrt.config'
       run: |
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        chmod +x ./customize.sh && ./customize.sh
+        chmod +x ./rax3000m/customize.sh && ./rax3000m/customize.sh
         cd openwrt && make defconfig
         
     - name: SSH远程连接（make menuconfig）
@@ -117,7 +117,6 @@ jobs:
         rm -rf openwrt/package/feeds/luci/luci-app-openclash
 
         ls
-        chmod +x ./rax3000m/customize.sh && ./rax3000m/customize.sh
         chmod +x $GITHUB_WORKSPACE/patches/*.sh
         chmod +x $GITHUB_WORKSPACE/rax3000m/*.sh
         cd openwrt/package/feeds/luci
