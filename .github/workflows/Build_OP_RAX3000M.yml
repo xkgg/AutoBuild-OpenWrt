@@ -161,13 +161,12 @@ jobs:
       run: |
           #在openwrt目录下创建目录为upload目录名
           cd ./openwrt && mkdir ./upload
-
-          
+          rm -rf $(find ./ -iregex ".*\(json\|buildinfo\|sha256sums\|packages\)$")
           cp -rf $(find ./bin/targets/ -type f -iname "*.*") ./upload/
           cp -rf ./.config ./upload/Config_"Rax3000"_"openwrt源码"_"$FILE_DATE".txt
           cd ./bin/targets/*/*
           echo "KERNEL=$(cat *.manifest | grep ^kernel | cut -d- -f2 | tr -d ' ')" >> $GITHUB_ENV
-          rm -rf $(find ./ -iregex ".*\(json\|manifest\|buildinfo\|sha256sums\|packages\)$")
+          rm -rf *.manifest
           cd ./upload
 
     - name: Organize files
