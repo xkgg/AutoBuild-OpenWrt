@@ -158,17 +158,16 @@ jobs:
 
         #软件包分类
     - name: Package Firmware 
-      working-directory: ./openwrt
       run: |
           #在openwrt目录下创建目录为upload目录名
-          mkdir ./upload
+          cd ./openwrt && mkdir ./upload
           rm -rf $(find ./ -iregex ".*\(json\|buildinfo\|sha256sums\|packages\)$")
           cp -rf $(find ./bin/targets/ -type f -iname "*.*") ./upload/
           cp -rf ./.config ./upload/Config_"Rax3000"_"openwrt源码"_"$FILE_DATE".txt
           cd ./bin/targets/*/*
           echo "KERNEL=$(cat *.manifest | grep ^kernel | cut -d- -f2 | tr -d ' ')" >> $GITHUB_ENV
           rm -rf *.manifest
-          cd ./upload
+          cd "$GITHUB_WORKSPACE/openwrt/upload"
 
     - name: Organize files
       id: organize
