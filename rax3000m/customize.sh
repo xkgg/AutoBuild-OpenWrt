@@ -13,6 +13,10 @@ sed -i -e "s/set system.@system\[-1].hostname='OpenWrt'/set system.@system\[-1].
 
 #3. 修改顺序分配IP地址
 sed -i '15a option sequential_ip	1' openwrt/package/network/services/dnsmasq/files/dhcp.conf
+sed -i 's/option start 	100/option start 	2/g' openwrt/package/network/services/dnsmasq/files/dhcp.conf
+sed -i 's/option limit	150/option limit	255/g' openwrt/package/network/services/dnsmasq/files/dhcp.conf
+sed -i 's/option leasetime	12h/option leasetime	7d/g' openwrt/package/network/services/dnsmasq/files/dhcp.conf
+
 
 #4. Clear the login password
 #sed -i 's/$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.//g' openwrt/package/base-files/files/etc/shadows
