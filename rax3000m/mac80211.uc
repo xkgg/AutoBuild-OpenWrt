@@ -1,4 +1,4 @@
-#路径
+#!路径openwrt/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 #!/usr/bin/env ucode
 import { readfile } from "fs";
 import * as uci from 'uci';
@@ -56,7 +56,7 @@ for (let phy_name, phy in board.wlan) {
 
 		let width = band.max_width;
 		if (band_name == "2G")
-			width = 20;
+			width = 40;
 		else if (width > 80)
 			width = 80;
 
@@ -105,7 +105,7 @@ set ${si}=wifi-iface
 set ${si}.device='${name}'
 set ${si}.network='lan'
 set ${si}.mode='ap'
-set ${si}.ssid='${defaults?.ssid || "ImmortalWrt"}'
+set ${si}.ssid='${defaults?.ssid || "OpenWrt"}'
 set ${si}.encryption='${defaults?.encryption || "none"}'
 set ${si}.key='${defaults?.key || ""}'
 
