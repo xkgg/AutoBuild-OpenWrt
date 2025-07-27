@@ -31,5 +31,5 @@ rm openwrt/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 cp "$GITHUB_WORKSPACE/rax3000m/mac80211.uc" "openwrt/package/network/config/wifi-scripts/files/lib/wifi/"
 chmod 0755 ./openwrt/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 sed -i "s#ssid='[^']*'#ssid='OpenWrt'#g" openwrt/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
-
+cat openwrt/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 
