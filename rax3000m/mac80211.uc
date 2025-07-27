@@ -1,4 +1,4 @@
-#!路径openwrt/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+
 #!/usr/bin/env ucode
 import { readfile } from "fs";
 import * as uci from 'uci';
