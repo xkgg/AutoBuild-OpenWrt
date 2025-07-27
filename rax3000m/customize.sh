@@ -27,9 +27,9 @@ sed -i 's/option leasetime	12h/option leasetime	7d/g' openwrt/package/network/se
 
 #7. 修改wifi名字
 rm openwrt/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
-cd openwrt/package/network/config/wifi-scripts/files/lib/wifi/
+#cd openwrt/package/network/config/wifi-scripts/files/lib/wifi/
 cp "$GITHUB_WORKSPACE/rax3000m/mac80211.uc" "openwrt/package/network/config/wifi-scripts/files/lib/wifi/"
-chmod 0755 ./mac80211.uc
+chmod 0755 ./openwrt/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 sed -i "s#ssid='[^']*'#ssid='OpenWrt'#g" openwrt/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 
 
