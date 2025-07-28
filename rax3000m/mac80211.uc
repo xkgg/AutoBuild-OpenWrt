@@ -1,4 +1,3 @@
-
 #!/usr/bin/env ucode
 import { readfile } from "fs";
 import * as uci from 'uci';
@@ -56,7 +55,7 @@ for (let phy_name, phy in board.wlan) {
 
 		let width = band.max_width;
 		if (band_name == "2G")
-			width = 40;
+			width = 20;
 		else if (width > 80)
 			width = 80;
 
@@ -99,7 +98,7 @@ set ${s}.channel='${channel}'
 set ${s}.htmode='${htmode}'
 set ${s}.country='${country || "CN"}'
 set ${s}.num_global_macaddr='${num_global_macaddr || ''}'
-set ${s}.disabled='0'
+set ${s}.disabled='0' 
 
 set ${si}=wifi-iface
 set ${si}.device='${name}'
