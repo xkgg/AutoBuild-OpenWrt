@@ -122,6 +122,10 @@ jobs:
         cd openwrt/package/feeds/luci
         #执行自定义插件
         $GITHUB_WORKSPACE/patches/Plugins.sh
+    - name: Setup Go
+      uses: actions/setup-go@v5  # 使用最新版setup-go
+      with:
+        go-version: '1.26.4'     # 必须≥1.22.6（推荐1.25.3或更高）
         
     - name: Download package
       working-directory: ./openwrt
