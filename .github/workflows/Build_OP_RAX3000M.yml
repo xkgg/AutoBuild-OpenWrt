@@ -81,6 +81,13 @@ jobs:
         rm -rf feeds/packages/utils/v2dat
         rm -rf feeds/packages/lang/golang
         git clone https://github.com/kenzok8/golang -b 1.25 feeds/packages/lang/golang
+        wget -q https://dl.google.com/go/go1.22.10.linux-amd64.tar.gz
+        tar -C build_dir/hostpkg/ -xzf go1.22.10.linux-amd64.tar.gz
+        mv -f build_dir/hostpkg/go1.22.10 build_dir/hostpkg/go-1.25.3/.go_bootstrap
+        rm -rf build_dir/hostpkg/go-1.25.3/.built
+        build_dir/hostpkg/go-1.25.3/.go_bootstrap/bin/go version
+
+        
         ./scripts/feeds install -a
 
       
