@@ -84,6 +84,7 @@ jobs:
         
         
         ./scripts/feeds install -a
+        make menuconfig
 
       
         
