@@ -58,7 +58,7 @@ jobs:
       - name: 设置immortalwrt源码地址，以及克隆
         env: 
           REPO_URL: https://github.com/immortalwrt/immortalwrt
-          REPO_BRANCH: v24.10.2
+          REPO_BRANCH: v24.10.4
           UPLOAD_BIN_DIR: true
           UPLOAD_FIRMWARE: true
 
