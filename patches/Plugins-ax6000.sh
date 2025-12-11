@@ -102,7 +102,7 @@ cat $GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/frpc.config
 #修复uppnp文件数据
 rm $GITHUB_WORKSPACE/openwrt/package/feeds/packages/miniupnpd/files/upnpd.config
 cd $GITHUB_WORKSPACE/openwrt/package/feeds/packages/miniupnpd/files
-cp "$GITHUB_WORKSPACE/patches/upnpd.configax6000" "$GITHUB_WORKSPACE/openwrt/package/feeds/packages/miniupnpd/files/"
+cp "$GITHUB_WORKSPACE/patches/upnpd.config-ax6000" "$GITHUB_WORKSPACE/openwrt/package/feeds/packages/miniupnpd/files/"
 mv upnpd.config-ax6000 upnpd.config
 chmod 0755 ./upnpd.config
 
