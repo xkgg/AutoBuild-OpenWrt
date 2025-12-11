@@ -107,7 +107,7 @@ jobs:
           
           cd openwrt/package/feeds/luci
           #执行自定义插件
-          $GITHUB_WORKSPACE/patches/Plugins.sh
+          $GITHUB_WORKSPACE/patches/Plugins-ax6000.sh
 
 
 
