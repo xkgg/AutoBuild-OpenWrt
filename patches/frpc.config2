@@ -18,10 +18,28 @@ config conf 'common'
 #	list _ '# Key-A=Value-A'
 
 config conf 
-        option name 'rax3000m-emmc-2411-http'
+        option name 'cjh-ax6000'
 	option type 'http'
 	option use_encryption 'false'
 	option use_compression 'false'
-	option local_ip 192.168.10.1
+	option local_ip 192.168.31.1
 	option local_port '80'
-	option custom_domains 'rax.13m.top'
+	option custom_domains 'cjh.13m.top'
+config conf
+	option name 'SSH-REDMI'
+	option type 'tcp'
+	option use_encryption 'false'
+	option use_compression 'false'
+	option local_ip '192.168.31.1'
+	option local_port '22'
+	option remote_port '6003'
+
+config conf
+	option name 'SSH-ADMIN'
+	option type 'tcp'
+	option use_encryption 'false'
+	option use_compression 'false'
+	option local_ip '192.168.31.1'
+	option local_port '7682'
+	option remote_port '7682'
+
