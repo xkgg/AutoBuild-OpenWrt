@@ -21,3 +21,7 @@ sed -i '15a option sequential_ip	1' openwrt/package/network/services/dnsmasq/fil
 sed -i 's/option start 	100/option start 	2/g' openwrt/package/network/services/dnsmasq/files/dhcp.conf
 sed -i 's/option limit	150/option limit	255/g' openwrt/package/network/services/dnsmasq/files/dhcp.conf
 sed -i 's/option leasetime	12h/option leasetime	7d/g' openwrt/package/network/services/dnsmasq/files/dhcp.conf
+
+#8. 修复rust报错
+MAKEFILE_PATH="openwrt/feeds/packages/lang/rust/Makefile"
+sed -i 's|	--set=llvm.download-ci-llvm=true |	--set=llvm.download-ci-llvm=false |g' "$MAKEFILE_PATH"
