@@ -212,7 +212,7 @@ jobs:
           
           #上传固件以发布
     - name: Upload firmware to release
-      uses: softprops/action-gh-release@master
+      uses: softprops/action-gh-release@v2
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
@@ -222,16 +222,15 @@ jobs:
 
 
     - name: Delete workflow runs
-      uses: GitRML/delete-workflow-runs@main
+      uses: Mattraks/delete-workflow-runs@v2
       with:
         retain_days: 1
         keep_minimum_runs: 3
  
     - name: Remove old Releases
-      uses: dev-drprasad/delete-older-releases@v0.1.0
+      uses: ophub/delete-releases-workflows@main
       with:
-          keep_latest: 3
+          releases_keep_latest: 3
+          delete_releases: true
           delete_tags: true
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+          gh_token: ${{ secrets.GITHUB_TOKEN }}
