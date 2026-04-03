@@ -9,7 +9,7 @@
 Build OpenWrt firware [Lean's OpenWrt](https://github.com/coolsnowwolf/lede) using GitHub Actions  
 Hereby thank P3TERX for his amazing job: https://github.com/P3TERX/Actions-OpenWrt/  
 
-Hereby thank KFERMercer for his amazing job: https://github.com/KFERMercer/OpenWrt-CI  
+Hereby thank KFERMercer for his amazing job: https://github.com/0118Add/Openwrt-CI 
 You could edit and enable "Sync Code" YAML file to let your forked repo keep updated.
 
 ## Usage
