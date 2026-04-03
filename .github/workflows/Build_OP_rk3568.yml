@@ -45,7 +45,7 @@ jobs:
           temp-reserve-mb: 100
           root-reserve-mb: 1024
           
-     - name: 将github存储库签出到运行器
+    - name: 将github存储库签出到运行器
       uses: actions/checkout@v4
 
     - name: Clone source code
