@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
 
     steps:
     - name: Checkout
@@ -29,7 +29,7 @@ jobs:
           sudo rm -rf /usr/share/dotnet /etc/apt/sources.list.d /usr/local/lib/android $AGENT_TOOLSDIRECTORY
           sudo -E apt-get -y purge azure-cli ghc* zulu* llvm* firefox google* dotnet* powershell openjdk* mongodb* moby* || true
           sudo -E apt-get -y update
-          sudo -E apt-get -y install $(curl -fsSL https://raw.githubusercontent.com/0118Add/Openwrt-CI/refs/heads/main/depends-ubuntu-2404)
+          sudo -E apt-get -y install $(curl -fsSL https://raw.githubusercontent.com/0118Add/Openwrt-CI/refs/heads/main/depends-ubuntu-2204)
           sudo -E apt-get install -y python3-pyelftools
           sudo -E systemctl daemon-reload
           sudo -E apt-get -y autoremove --purge
