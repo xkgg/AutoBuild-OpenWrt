@@ -227,8 +227,8 @@ jobs:
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2
         with:
-          retain_days: 1
-          keep_minimum_runs: 3
+          retain_days: 1  #保留工作流程运行的天数。默认30
+          keep_minimum_runs: 3 #每个工作流程（或如果启用了，每天）至少要保留的运行次数。use_daily_retention 默认6
 
           
       - name: Remove old Releases
