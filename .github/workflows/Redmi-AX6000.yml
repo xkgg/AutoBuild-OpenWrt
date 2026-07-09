@@ -236,5 +236,4 @@ jobs:
         with:
           releases_keep_latest: 3
           delete_tags: true
-        env:
           gh_token: ${{ secrets.GITHUB_TOKEN }}
