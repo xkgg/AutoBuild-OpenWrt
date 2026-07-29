@@ -118,10 +118,8 @@ jobs:
     - name: 自定义设置类
       run: |
         #删除旧版openclash
-        ls
         rm -rf openwrt/package/feeds/luci/luci-app-openclash
 
-        ls
         chmod +x $GITHUB_WORKSPACE/patches/*.sh
         chmod +x $GITHUB_WORKSPACE/rax3000m/*.sh
         cd openwrt/package/feeds/luci
