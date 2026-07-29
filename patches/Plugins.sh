@@ -95,9 +95,9 @@ fi
 
 rm $GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/frpc.config
 cd $GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files
-#cp "$GITHUB_WORKSPACE/patches/frpc.config" "$GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/"
-cp "$GITHUB_WORKSPACE/patches/wmk.config" "$GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/"
-mv wmk.config frpc.config
+cp "$GITHUB_WORKSPACE/patches/frpc.config" "$GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/"
+#cp "$GITHUB_WORKSPACE/patches/wmk.config" "$GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/"
+#mv wmk.config frpc.config
 chmod 0755 ./frpc.config
 cat $GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/frpc.config
 
