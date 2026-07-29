@@ -103,10 +103,8 @@ jobs:
         run: |
           #删除旧版openclash
 
-          ls
           rm -rf openwrt/package/feeds/luci/luci-app-openclash
 
-          ls
           chmod +x ./customize.sh && ./customize.sh
           chmod +x $GITHUB_WORKSPACE/patches/*.sh
           
