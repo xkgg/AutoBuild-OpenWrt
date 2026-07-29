@@ -79,13 +79,12 @@ if [ "$(grep -c "^CONFIG_PACKAGE_luci-app-openclash=y$" $GITHUB_WORKSPACE/openwr
         *)
             # 如果是不支持的架构，最好直接报错退出，而不是继续执行
             echo "::error ::不支持的CPU架构: $ARCHT"
-            # exit 1 取消退出
+            CORE_ARCH="1"
             ;;
     esac
 
     echo "::notice ::检测到luci-app-openclash配置为编译进固件,下载架构为$CORE_ARCH的openclash内核"
-fi
-    
+
     if [ "$CORE_ARCH" != "1" ]; then
         CPU_MODEL=$CORE_ARCH
         
@@ -112,8 +111,8 @@ fi
         rm -rf $GITHUB_WORKSPACE/openwrt/package/feeds/luci/OpenClash/luci-app-openclash/root/etc/openclash/core
     fi
 else
-  echo "::notice ::未检测到luci-app-openclash配置为编译进固件,退出执行下载openclash内核。"
-  rm -rf $GITHUB_WORKSPACE/openwrt/package/feeds/luci/OpenClash/luci-app-openclash
+    echo "::notice ::未检测到luci-app-openclash配置为编译进固件,退出执行下载openclash内核。"
+    rm -rf $GITHUB_WORKSPACE/openwrt/package/feeds/luci/OpenClash/luci-app-openclash
 fi
 
 
