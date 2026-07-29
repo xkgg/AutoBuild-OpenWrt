@@ -24,19 +24,29 @@ export TUN_VER=$(curl -sfL $CORE_VER | sed -n "2{s/\r$//;p;q}")
 #export CORE_DEV=https:/raw.githubusercontent.com/vernesong/OpenClash/core/master/dev/clash-linux-arm64.tar.gz
 #export CORE_MATE=https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-arm64.tar.gz
 
+# 检查是否选择了编译 luci-app-openclash
 if [ "$(grep -c "^CONFIG_PACKAGE_luci-app-openclash=y$" $GITHUB_WORKSPACE/openwrt/.config)" -ne '0' ]; then
+    # 克隆 OpenClash 仓库
     git clone --depth=1 --single-branch --branch "dev" https://github.com/vernesong/OpenClash.git
+
+    # 1. 获取主架构 (aarch64, arm, mips, etc.)
     ARCHT="$(sed -n '/CONFIG_ARCH=/p' $GITHUB_WORKSPACE/openwrt/.config | sed -e 's/CONFIG_ARCH\=\"//' -e 's/\"//')"
-    echo "架构为 $Archt 的openclash内核"
+    
+    # 修复了这里的变量名，从 $Archt 改为 $ARCHT
+    echo "架构为 $ARCHT 的openclash内核"
+
     case $ARCHT in
         aarch64)
             CORE_ARCH="linux-arm64"
             ;;
         arm)
-            if [ "$(grep -c "CONFIG_ARM_" $GITHUB_WORKSPACE/openwrt/.config)" -ne '0' ]; then
-                armv="$(sed -n '/CONFIG_ARM_/p' $GITHUB_WORKSPACE/openwrt/.config | sed -e 's/CONFIG_ARM_//' -e 's/=y//')"
-            else
-                armv=v5
+            # 2. 针对 arm 架构，更精确地提取版本号
+            # 直接匹配 CONFIG_ARM_V* 或 CONFIG_ARM_V7 等格式，确保能提取到具体的版本号
+            armv=$(grep -E "^CONFIG_ARM_V[0-9]=y" $GITHUB_WORKSPACE/openwrt/.config | sed -e 's/CONFIG_ARM_//' -e 's/=y//')
+            
+            # 如果没有提取到具体的版本号，则默认为 v5
+            if [ -z "$armv" ]; then
+                armv="v5"
             fi
             CORE_ARCH="linux-arm${armv}"
             ;;
@@ -47,19 +57,35 @@ if [ "$(grep -c "^CONFIG_PACKAGE_luci-app-openclash=y$" $GITHUB_WORKSPACE/openwr
             CORE_ARCH="linux-mips64"
             ;;
         mips)
-            CORE_ARCH="linux-mips-softfloat"
+            # 3. 针对 mips 架构，增加对 hardfloat 的判断
+            # 检查是否启用了 mips hardfloat 支持
+            if grep -q "^CONFIG_MIPS_FPU_EMU=y" $GITHUB_WORKSPACE/openwrt/.config; then
+                 CORE_ARCH="linux-mips-hardfloat"
+            else
+                 CORE_ARCH="linux-mips-softfloat"
+            fi
             ;;
         mipsel)
-            CORE_ARCH="linux-mipsle-softfloat"
+            # 同样为 mipsel 增加 hardfloat 判断
+            if grep -q "^CONFIG_MIPS_FPU_EMU=y" $GITHUB_WORKSPACE/openwrt/.config; then
+                 CORE_ARCH="linux-mipsle-hardfloat"
+            else
+                 CORE_ARCH="linux-mipsle-softfloat"
+            fi
             ;;
         x86_64)
             CORE_ARCH="linux-amd64"
             ;;
         *)
-            CORE_ARCH="1"
+            # 如果是不支持的架构，最好直接报错退出，而不是继续执行
+            echo "::error ::不支持的CPU架构: $ARCHT"
+            # exit 1 取消退出
             ;;
     esac
+
     echo "::notice ::检测到luci-app-openclash配置为编译进固件,下载架构为$CORE_ARCH的openclash内核"
+fi
+    
     if [ "$CORE_ARCH" != "1" ]; then
         CPU_MODEL=$CORE_ARCH
         
