@@ -19,8 +19,9 @@ on:
            required: false
            default: 'false'
            type: boolean
-    
-
+env:
+  REPO_URL: https://github.com/openwrt/openwrt
+  REPO_BRANCH: v24.10.8
 jobs:
   build:
     runs-on: ubuntu-22.04
@@ -65,9 +66,6 @@ jobs:
       uses: actions/checkout@master
       
     - name: Clone source code
-      env: 
-        REPO_URL: https://github.com/openwrt/openwrt
-        REPO_BRANCH: v24.10.8
       run: |
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
         cd openwrt
