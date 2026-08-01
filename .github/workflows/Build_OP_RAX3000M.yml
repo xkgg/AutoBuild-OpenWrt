@@ -19,6 +19,15 @@ on:
            required: false
            default: 'false'
            type: boolean
+           
+         ddnsto_set:
+           description: 'ddnsto信息自动配置'
+           required: false
+           default: 'false'
+           type: boolean
+
+
+           
 env:
   REPO_URL: https://github.com/openwrt/openwrt
   REPO_BRANCH: v24.10.8
