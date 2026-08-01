@@ -120,7 +120,7 @@ jobs:
         
     - name: SSH远程连接（make menuconfig）
       if: ${{ inputs.SSH_ACTION == true }}
-      uses: danshui-git/debugger-action@main
+      uses: mxschmitt/action-tmate@v3
       
     - name: 自定义设置类
       run: |
