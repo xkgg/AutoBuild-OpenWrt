@@ -1,4 +1,4 @@
-name: Debug with tmate
+name: 手动触发调试 tmate
 on: [push]
   workflow_dispatch:
     inputs:
