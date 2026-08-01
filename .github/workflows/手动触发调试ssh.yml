@@ -5,7 +5,7 @@ on:
     inputs:
       debug_enabled:
         type: boolean
-        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        description: 'Run the build with tmate debugging enabled (https://github.com/mxschmitt/action-tmate)'
         required: false
         default: false # 建议：布尔值不需要加引号
 
