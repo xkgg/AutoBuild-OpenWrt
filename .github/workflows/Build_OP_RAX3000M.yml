@@ -136,10 +136,13 @@ jobs:
     - name: ddnsto配置
       if: inputs.ddnsto_set == 'true'
       run: |
-      
+        rm $GITHUB_WORKSPACE/openwrt/package/feeds/nas-packages/network/services/ddnsto/files/ddnsto.config
+        cd $GITHUB_WORKSPACE/openwrt/package/feeds/nas-packages/network/services/ddnsto/files
+        cp "$GITHUB_WORKSPACE/rax3000m/ddnsto.config" "$GITHUB_WORKSPACE/openwrt/package/feeds/nas-packages/network/services/ddnsto/files"
+        #cp "$GITHUB_WORKSPACE/patches/wmk.config" "$GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/"
+        #mv wmk.config frpc.config
+        chmod 0755 ./ddnsto.config
 
-
-      
     - name: Download package
       working-directory: ./openwrt
       run: |
