@@ -119,7 +119,7 @@ jobs:
         cd openwrt && make defconfig
         
     - name: SSH远程连接（make menuconfig）
-      if: inputs.SSH_ACTION == 'true'
+      if: ${{ inputs.SSH_ACTION == true }}
       uses: danshui-git/debugger-action@main
       
     - name: 自定义设置类
@@ -134,7 +134,7 @@ jobs:
         $GITHUB_WORKSPACE/patches/Plugins.sh
         
     - name: ddnsto配置
-      if: inputs.ddnsto_set == 'true'
+      if: ${{ inputs.ddnsto_set == true }}
       run: |
         rm $GITHUB_WORKSPACE/openwrt/package/feeds/nas-packages/network/services/ddnsto/files/ddnsto.config
         cd $GITHUB_WORKSPACE/openwrt/package/feeds/nas-packages/network/services/ddnsto/files
