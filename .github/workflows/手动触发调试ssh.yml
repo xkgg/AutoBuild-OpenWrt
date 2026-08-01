@@ -1,12 +1,14 @@
 name: 手动触发调试 tmate
-on: [push]
+
+on:
+  push:
   workflow_dispatch:
     inputs:
       debug_enabled:
         type: boolean
         description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
         required: false
-        default: 'false'
+        default: false # 建议：布尔值不需要加引号
 
 jobs:
   build:
