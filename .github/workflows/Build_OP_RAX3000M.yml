@@ -133,6 +133,13 @@ jobs:
         #执行自定义插件
         $GITHUB_WORKSPACE/patches/Plugins.sh
         
+    - name: ddnsto配置
+      if: inputs.ddnsto_set == 'true'
+      run: |
+      
+
+
+      
     - name: Download package
       working-directory: ./openwrt
       run: |
