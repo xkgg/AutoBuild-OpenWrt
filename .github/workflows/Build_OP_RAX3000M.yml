@@ -17,13 +17,13 @@ on:
          SSH_ACTION:
            description: 'SSH远程配置固件'
            required: false
-           default: 'false'
+           default: false
            type: boolean
            
          ddnsto_set:
            description: 'ddnsto信息自动配置'
            required: false
-           default: 'false'
+           default: false
            type: boolean
 
 
