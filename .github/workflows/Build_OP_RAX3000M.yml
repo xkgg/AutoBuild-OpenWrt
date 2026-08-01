@@ -88,10 +88,9 @@ jobs:
     - name: Update & Install feeds
       working-directory: ./openwrt
       run: |
-        git pull
-        git clone https://github.com/linkease/ddnsto-openwrt-package.git package/ddnsto
         ./scripts/feeds update -a && rm -rf feeds/luci/applications/luci-app-mosdns
         rm -rf feeds/packages/net/{adguardhome,mosdns,xray*,v2ray*,v2ray*,sing*,smartdns}
+        rm -rf feeds/packages/kenzo/ddnsto
         rm -rf feeds/packages/utils/v2dat
         rm -rf feeds/packages/lang/golang
         git clone https://github.com/kenzok8/golang -b 1.26 feeds/packages/lang/golang
@@ -136,9 +135,9 @@ jobs:
     - name: ddnsto配置
       if: ${{ inputs.ddnsto_set == true }}
       run: |
-        rm -f $GITHUB_WORKSPACE/openwrt/package/feeds/nas-packages/network/services/ddnsto/files/ddnsto.config
-        cd $GITHUB_WORKSPACE/openwrt/package/feeds/nas-packages/network/services/ddnsto/files
-        cp "$GITHUB_WORKSPACE/rax3000m/ddnsto.config" "$GITHUB_WORKSPACE/openwrt/package/feeds/nas-packages/network/services/ddnsto/files"
+        rm -f $GITHUB_WORKSPACE/openwrt/package/feeds/nas/ddnsto/files/ddnsto.config
+        cd $GITHUB_WORKSPACE/openwrt/package/feeds/nas/ddnsto/files
+        cp "$GITHUB_WORKSPACE/rax3000m/ddnsto.config" "$GITHUB_WORKSPACE/openwrt/package/feeds/nas/ddnsto/files"
         #cp "$GITHUB_WORKSPACE/patches/wmk.config" "$GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/"
         #mv wmk.config frpc.config
         chmod 0755 ./ddnsto.config
