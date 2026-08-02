@@ -20,6 +20,13 @@ on:
           required: false
           default: false
           type: boolean
+          
+env:
+  #设置immortalwrt源码地址，以及克隆
+  REPO_URL: https://github.com/immortalwrt/immortalwrt
+  REPO_BRANCH: v24.10.6
+  UPLOAD_BIN_DIR: true
+  UPLOAD_FIRMWARE: true
 
 jobs:
   build:
@@ -61,13 +68,6 @@ jobs:
       - name: 将github存储库签出到运行器
         uses: actions/checkout@v6
         
-      - name: 设置immortalwrt源码地址，以及克隆
-        env: 
-          REPO_URL: https://github.com/immortalwrt/immortalwrt
-          REPO_BRANCH: v24.10.6
-          UPLOAD_BIN_DIR: true
-          UPLOAD_FIRMWARE: true
-
           
         run: |
           git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
