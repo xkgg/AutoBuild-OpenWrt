@@ -185,6 +185,7 @@ jobs:
           echo "### 📒 固件信息" >> release.txt
           echo "Redmi-ax6000 自用精简" >> release.txt
           echo "- 💻 平台架构: ${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}" >> release.txt
+          echo "- 💝 系统版本: ${{ env.REPO_BRANCH }}" >> release.txt
           echo "- 🚀 内核版本: ${{ env.KERNEL }}" >> release.txt
           echo "- 🌐 默认地址: 192.168.31.1" >> release.txt
           echo "- 👤 账号：root" >> release.txt
