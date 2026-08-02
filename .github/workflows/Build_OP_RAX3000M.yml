@@ -93,6 +93,8 @@ jobs:
         rm -rf feeds/packages/kenzo/ddnsto
         rm -rf feeds/packages/utils/v2dat
         rm -rf feeds/packages/lang/golang
+        # 网络唤醒插件
+        git clone https://github.com/adminchenyu/LAN-Wake.git feeds/packages/LAN-Wake 
         git clone https://github.com/kenzok8/golang -b 1.26 feeds/packages/lang/golang
 
         ./scripts/feeds install -a
