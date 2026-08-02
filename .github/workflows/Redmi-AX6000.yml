@@ -68,7 +68,7 @@ jobs:
       - name: 将github存储库签出到运行器
         uses: actions/checkout@v6
         
-          
+      - name: 下载源码  
         run: |
           git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
           cd openwrt
