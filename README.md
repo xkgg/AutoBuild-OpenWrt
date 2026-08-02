@@ -12,6 +12,8 @@ Hereby thank P3TERX for his amazing job: https://github.com/P3TERX/Actions-OpenW
 Hereby thank KFERMercer for his amazing job: https://github.com/0118Add/Openwrt-CI 
 You could edit and enable "Sync Code" YAML file to let your forked repo keep updated.
 
+Actions SSH调试开发作者：[mxschmitt](https://github.com/mxschmitt/action-tmate)
+
 ## Usage
    [中文教程](https://p3terx.com/archives/build-openwrt-with-github-actions.html)
    
