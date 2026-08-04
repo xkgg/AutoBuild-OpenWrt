@@ -20,8 +20,6 @@
 #预置OpenClash内核和GEO数据
 export CORE_VER=https://raw.githubusercontent.com/vernesong/OpenClash/core/dev/core_version
 export TUN_VER=$(curl -sfL $CORE_VER | sed -n "2{s/\r$//;p;q}")
-#export CORE_TUN=https://raw.githubusercontent.com/vernesong/OpenClash/core/master/premium/clash-linux-arm64
-#export CORE_DEV=https:/raw.githubusercontent.com/vernesong/OpenClash/core/master/dev/clash-linux-arm64.tar.gz
 #export CORE_MATE=https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-arm64.tar.gz
 
 # 检查是否选择了编译 luci-app-openclash
@@ -94,18 +92,56 @@ if [ "$(grep -c "^CONFIG_PACKAGE_luci-app-openclash=y$" $GITHUB_WORKSPACE/openwr
         export GEO_IP=https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geoip.dat
 
         cd $GITHUB_WORKSPACE/openwrt/package/feeds/luci/OpenClash/luci-app-openclash/root/etc/openclash || exit 1
-
+       
         curl -sfL -o ./Country.mmdb $GEO_MMDB
         curl -sfL -o ./GeoSite.dat $GEO_SITE
         curl -sfL -o ./GeoIP.dat $GEO_IP
-
+        # ========== Clash Meta 内核下载（失败跳过，不中断构建）========== 
+        CORE_DOWNLOADED=false
+        MAX_RETRIES=3
+        RETRY_DELAY=5
+        
         mkdir -p ./core && cd ./core
-        curl -sfL -o ./meta.tar.gz "$CORE_MATE"
-        tar -zxf ./meta.tar.gz && mv -f clash ./clash_meta
-        chmod 0755 ./clash_meta
-        chmod +x ./clash* 
-        rm -rf ./*.gz
-        echo "OpenClash 加入内置内核成功."
+        
+        for ((i=1; i<=MAX_RETRIES; i++)); do
+            echo "⬇️  [Attempt $i/$MAX_RETRIES] Downloading Clash Meta core..."
+            
+            # -f: HTTP错误时返回非零退出码; -s: 静默; -L: 跟随重定向
+            if curl -sfL --connect-timeout 15 --max-time 300 -o ./meta.tar.gz "$CORE_MATE"; then
+                # 额外校验：防止下载到空文件或 404 HTML 页面
+                if [[ -s ./meta.tar.gz ]] && tar -tzf ./meta.tar.gz >/dev/null 2>&1; then
+                    echo "✅ Clash Meta core downloaded and verified successfully."
+                    CORE_DOWNLOADED=true
+                    break
+                else
+                    echo "⚠️  Downloaded file is invalid or empty, will retry..."
+                    rm -f ./meta.tar.gz
+                fi
+            else
+                echo "⚠️  Download failed (curl exit code: $?), will retry..."
+                rm -f ./meta.tar.gz
+            fi
+        
+            # 未达到最大次数时等待后重试（指数退避）
+            if [[ $i -lt $MAX_RETRIES ]]; then
+                echo "⏳ Waiting ${RETRY_DELAY}s before next attempt..."
+                sleep "$RETRY_DELAY"
+                RETRY_DELAY=$((RETRY_DELAY * 2))
+            fi
+        done
+        
+        # ========== 根据下载结果决定是否解压 ==========
+        if [[ "$CORE_DOWNLOADED" == "true" ]]; then
+            tar -zxf ./meta.tar.gz
+            mv -f clash ./clash_meta 2>/dev/null || true
+            chmod 0755 ./clash_meta
+            rm -rf ./*.gz
+            echo "✅ OpenClash 内置内核准备就绪: $(./clash_meta -v 2>/dev/null || echo 'version unknown')"
+        else
+            echo "⚠️  Skipping Clash Meta core setup after $MAX_RETRIES failed attempts."
+            echo "⚠️  Build will continue WITHOUT built-in clash_meta binary."
+        fi
+
     else
         echo "::warning ::openclash内核不支持此架构,退出执行下载openclash内核。"
         rm -rf $GITHUB_WORKSPACE/openwrt/package/feeds/luci/OpenClash/luci-app-openclash/root/etc/openclash/core
