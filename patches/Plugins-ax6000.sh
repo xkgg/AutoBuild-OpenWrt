@@ -99,13 +99,46 @@ if [ "$(grep -c "^CONFIG_PACKAGE_luci-app-openclash=y$" $GITHUB_WORKSPACE/openwr
         curl -sfL -o ./GeoSite.dat $GEO_SITE
         curl -sfL -o ./GeoIP.dat $GEO_IP
 
+        # ========== Clash Meta 内核下载（重试3次，失败跳过不中断构建）==========
+        CORE_DOWNLOADED=false
+        MAX_RETRIES=3
+        RETRY_DELAY=5
+
         mkdir -p ./core && cd ./core
-        curl -sfL -o ./meta.tar.gz "$CORE_MATE"
-        tar -zxf ./meta.tar.gz && mv -f clash ./clash_meta
-        chmod 0755 ./clash_meta
-        chmod +x ./clash* 
-        rm -rf ./*.gz
-        echo "OpenClash 加入内置内核成功."
+
+        for ((i=1; i<=MAX_RETRIES; i++)); do
+            echo "⬇️  [Attempt $i/$MAX_RETRIES] Downloading Clash Meta core..."
+            if curl -sfL --connect-timeout 15 --max-time 300 -o ./meta.tar.gz "$CORE_MATE"; then
+                if [[ -s ./meta.tar.gz ]] && tar -tzf ./meta.tar.gz >/dev/null 2>&1; then
+                    echo "✅ Clash Meta core downloaded and verified successfully."
+                    CORE_DOWNLOADED=true
+                    break
+                else
+                    echo "⚠️  Downloaded file is invalid or empty, will retry..."
+                    rm -f ./meta.tar.gz
+                fi
+            else
+                echo "⚠️  Download failed (curl exit code: $?), will retry..."
+                rm -f ./meta.tar.gz
+            fi
+
+            if [[ $i -lt $MAX_RETRIES ]]; then
+                echo "⏳ Waiting ${RETRY_DELAY}s before next attempt..."
+                sleep "$RETRY_DELAY"
+                RETRY_DELAY=$((RETRY_DELAY * 2))
+            fi
+        done
+
+        if [[ "$CORE_DOWNLOADED" == "true" ]]; then
+            tar -zxf ./meta.tar.gz
+            mv -f clash ./clash_meta 2>/dev/null || true
+            chmod 0755 ./clash_meta
+            rm -rf ./*.gz
+            echo "✅ OpenClash 加入内置内核成功."
+        else
+            echo "::warning ::Clash Meta core download failed after $MAX_RETRIES attempts, skipping core integration."
+            rm -rf ./meta.tar.gz
+        fi
     else
         echo "::warning ::openclash内核不支持此架构,退出执行下载openclash内核。"
         rm -rf $GITHUB_WORKSPACE/openwrt/package/feeds/luci/OpenClash/luci-app-openclash/root/etc/openclash/core
@@ -117,7 +150,7 @@ fi
 
 
 #更改frpc文件数据
-rm $GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/frpc.config
+rm -f $GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/frpc.config
 cd $GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files
 cp "$GITHUB_WORKSPACE/patches/frpc.config2" "$GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/"
 mv frpc.config2 frpc.config
@@ -125,7 +158,7 @@ chmod 0755 ./frpc.config
 cat $GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/frpc.config
 
 #修复uppnp文件数据
-rm $GITHUB_WORKSPACE/openwrt/package/feeds/packages/miniupnpd/files/upnpd.config
+rm -f $GITHUB_WORKSPACE/openwrt/package/feeds/packages/miniupnpd/files/upnpd.config
 cd $GITHUB_WORKSPACE/openwrt/package/feeds/packages/miniupnpd/files
 cp "$GITHUB_WORKSPACE/patches/upnpd.config-ax6000" "$GITHUB_WORKSPACE/openwrt/package/feeds/packages/miniupnpd/files/"
 mv upnpd.config-ax6000 upnpd.config

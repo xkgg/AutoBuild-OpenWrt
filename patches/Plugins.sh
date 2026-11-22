@@ -154,19 +154,19 @@ fi
 
 
 
-rm $GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/frpc.config
-cd $GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files
-cp "$GITHUB_WORKSPACE/patches/frpc.config" "$GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/"
-#cp "$GITHUB_WORKSPACE/patches/wmk.config" "$GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/"
-#mv wmk.config frpc.config
-chmod 0755 ./frpc.config
-cat $GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/frpc.config
-
+rm -f $GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/frpc.config
+if [ -d "$GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files" ]; then
+    cd $GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files
+    cp "$GITHUB_WORKSPACE/patches/frpc.config" "$GITHUB_WORKSPACE/openwrt/package/feeds/packages/frp/files/"
+    chmod 0755 ./frpc.config
+fi
 
 #修复uppnp文件数据
-rm $GITHUB_WORKSPACE/openwrt/package/feeds/packages/miniupnpd/files/upnpd.config
-cd $GITHUB_WORKSPACE/openwrt/package/feeds/packages/miniupnpd/files
-cp "$GITHUB_WORKSPACE/patches/upnpd.config-rax3000" "$GITHUB_WORKSPACE/openwrt/package/feeds/packages/miniupnpd/files/"
-mv upnpd.config-rax3000 upnpd.config
-chmod 0755 ./upnpd.config
+rm -f $GITHUB_WORKSPACE/openwrt/package/feeds/packages/miniupnpd/files/upnpd.config
+if [ -d "$GITHUB_WORKSPACE/openwrt/package/feeds/packages/miniupnpd/files" ]; then
+    cd $GITHUB_WORKSPACE/openwrt/package/feeds/packages/miniupnpd/files
+    cp "$GITHUB_WORKSPACE/patches/upnpd.config-rax3000" "$GITHUB_WORKSPACE/openwrt/package/feeds/packages/miniupnpd/files/"
+    mv upnpd.config-rax3000 upnpd.config
+    chmod 0755 ./upnpd.config
+fi
 

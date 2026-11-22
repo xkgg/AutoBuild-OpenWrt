@@ -24,4 +24,4 @@ sed -i 's/option leasetime	12h/option leasetime	7d/g' openwrt/package/network/se
 
 #8. 修复rust报错
 MAKEFILE_PATH="openwrt/feeds/packages/lang/rust/Makefile"
-sed -i 's|	--set=llvm.download-ci-llvm=true |	--set=llvm.download-ci-llvm=false |g' "$MAKEFILE_PATH"
+[ -f "$MAKEFILE_PATH" ] && sed -i 's|	--set=llvm.download-ci-llvm=true |	--set=llvm.download-ci-llvm=false |g' "$MAKEFILE_PATH"
