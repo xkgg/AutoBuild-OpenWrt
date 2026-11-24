@@ -26,6 +26,10 @@ export TUN_VER=$(curl -sfL $CORE_VER | sed -n "2{s/\r$//;p;q}")
 
 # 检查是否选择了编译 luci-app-openclash
 if [ "$(grep -c "^CONFIG_PACKAGE_luci-app-openclash=y$" $GITHUB_WORKSPACE/openwrt/.config)" -ne '0' ]; then
+    # 删除所有 feed 中提供的 luci-app-openclash（如 immortalwrt luci feed 版本），
+    # 避免与下面克隆的官方 dev 版产生同名包冲突，导致预置内核的版本被顶替
+    rm -rf $GITHUB_WORKSPACE/openwrt/package/feeds/*/luci-app-openclash
+
     # 克隆 OpenClash 仓库
     git clone --depth=1 --single-branch --branch "dev" https://github.com/vernesong/OpenClash.git
 

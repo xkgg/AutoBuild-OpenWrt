@@ -125,8 +125,8 @@ jobs:
       
     - name: 自定义设置类
       run: |
-        #删除旧版openclash
-        rm -rf openwrt/package/feeds/luci/luci-app-openclash
+        #删除所有 feed 提供的旧版 openclash（含 small feed 版本），防止与克隆的官方 dev 版冲突
+        rm -rf openwrt/package/feeds/*/luci-app-openclash
 
         chmod +x $GITHUB_WORKSPACE/patches/*.sh
         chmod +x $GITHUB_WORKSPACE/rax3000m/*.sh
