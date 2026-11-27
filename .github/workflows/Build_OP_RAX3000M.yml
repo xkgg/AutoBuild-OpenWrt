@@ -82,6 +82,8 @@ jobs:
         
     - name: Update & Install feeds
       working-directory: ./openwrt
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         ./scripts/feeds update -a && rm -rf feeds/luci/applications/luci-app-mosdns
         rm -rf feeds/packages/net/{adguardhome,mosdns,xray*,v2ray*,v2ray*,sing*,smartdns}
@@ -91,6 +93,95 @@ jobs:
         # 网络唤醒插件
         git clone https://github.com/adminchenyu/LAN-Wake.git feeds/packages/LAN-Wake 
         git clone https://github.com/kenzok8/golang -b 1.26 feeds/packages/lang/golang
+
+        # 更新 frps / frpc 到最新版，并同步升级 net/frp/files 及 luci-app-frpc / luci-app-frps (TOML 新版)
+        FRP_MAKEFILE="feeds/packages/net/frp/Makefile"
+        if [ -f "$FRP_MAKEFILE" ]; then
+          AUTH_HEADER=()
+          if [ -n "${GITHUB_TOKEN:-}" ]; then
+            AUTH_HEADER=(-H "Authorization: Bearer ${GITHUB_TOKEN}")
+          fi
+          FRP_TAG=$(curl -fsSL "${AUTH_HEADER[@]}" "https://api.github.com/repos/fatedier/frp/releases/latest" 2>/dev/null | python3 -c 'import sys,json; print(json.load(sys.stdin).get("tag_name",""))' 2>/dev/null || true)
+          if [ -z "$FRP_TAG" ]; then
+            FRP_TAG=$(curl -fsSLI -o /dev/null -w '%{url_effective}' "https://github.com/fatedier/frp/releases/latest" 2>/dev/null | grep '/tag/' | awk -F'/tag/' '{print $NF}' || true)
+          fi
+          FRP_VER="${FRP_TAG#v}"
+          if [[ "$FRP_VER" =~ ^[0-9]+(\.[0-9]+)+([.-][0-9A-Za-z]+)*$ ]]; then
+            mkdir -p dl
+            FRP_TAR="dl/frp-${FRP_VER}.tar.gz"
+            if curl -fsSL --retry 3 --retry-delay 5 "https://codeload.github.com/fatedier/frp/tar.gz/v${FRP_VER}" -o "$FRP_TAR" && tar -tzf "$FRP_TAR" >/dev/null 2>&1; then
+              FRP_HASH=$(sha256sum "$FRP_TAR" | awk '{print $1}')
+              FRP_VER="$FRP_VER" FRP_HASH="$FRP_HASH" FRP_MAKEFILE="$FRP_MAKEFILE" python3 - <<'EOF'
+        import os, re
+        path = os.environ["FRP_MAKEFILE"]
+        ver = os.environ["FRP_VER"]
+        sha = os.environ["FRP_HASH"]
+        with open(path, "r", encoding="utf-8") as f:
+            text = f.read()
+        text = re.sub(r"^PKG_VERSION:=.*$", f"PKG_VERSION:={ver}", text, flags=re.M)
+        text = re.sub(r"^PKG_RELEASE:=.*$", "PKG_RELEASE:=1", text, flags=re.M)
+        text = re.sub(r"^PKG_HASH:=.*$", f"PKG_HASH:={sha}", text, flags=re.M)
+        if "GO_PKG_TAGS:=" not in text:
+            text = re.sub(
+                r"^(GO_PKG_BUILD_PKG:=.*)$",
+                r"\1\nGO_PKG_TAGS:=noweb\nGO_PKG_LDFLAGS:=-s -w\nGO_PKG_LDFLAGS_X:=github.com/fatedier/frp/pkg/util/version.version=$(PKG_VERSION)",
+                text,
+                flags=re.M,
+            )
+        old_conf = "\t$(INSTALL_DATA) $(PKG_BUILD_DIR)/conf/$(2)_full.ini $(1)/etc/frp/$(2).d/"
+        new_conf = (
+            "\tif [ -f \"$(PKG_BUILD_DIR)/conf/$(2)_full_example.toml\" ]; then \\\n"
+            "\t\t$(INSTALL_DATA) $(PKG_BUILD_DIR)/conf/$(2)_full_example.toml $(1)/etc/frp/$(2).d/; \\\n"
+            "\telif [ -f \"$(PKG_BUILD_DIR)/conf/$(2)_full.ini\" ]; then \\\n"
+            "\t\t$(INSTALL_DATA) $(PKG_BUILD_DIR)/conf/$(2)_full.ini $(1)/etc/frp/$(2).d/; \\\n"
+            "\tfi"
+        )
+        text = text.replace(old_conf, new_conf)
+        text = re.sub(
+            r"(define Package/\$\(1\)/conffiles\n/etc/config/\$\(1\)\n)(  endef)",
+            r"\1/etc/frp/$(1).d/\n\2",
+            text,
+        )
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(text)
+        EOF
+              echo "::notice ::frps/frpc 已更新至最新版 v${FRP_VER} (sha256: ${FRP_HASH})"
+            else
+              echo "::warning ::下载 frp v${FRP_VER} 源码包失败，保留默认版本"
+              rm -f "$FRP_TAR"
+            fi
+          else
+            echo "::warning ::获取 frp 最新版本号失败，保留默认版本"
+          fi
+        fi
+
+        # 同步 openwrt/packages (master) 的 net/frp/files 及 openwrt/luci (master) 的 luci-app-frpc / luci-app-frps
+        rm -rf /tmp/frp-master-pkg /tmp/frp-master-luci
+        if git clone --depth=1 --filter=blob:none --sparse -b master https://github.com/openwrt/packages.git /tmp/frp-master-pkg \
+          && git -C /tmp/frp-master-pkg sparse-checkout set net/frp/files \
+          && [ -f /tmp/frp-master-pkg/net/frp/files/frpc.init ] \
+          && [ -f /tmp/frp-master-pkg/net/frp/files/frps.init ]; then
+          rm -rf feeds/packages/net/frp/files
+          cp -a /tmp/frp-master-pkg/net/frp/files feeds/packages/net/frp/files
+          echo "::notice ::已同步 openwrt/packages (master) net/frp/files (TOML init/config)"
+        else
+          echo "::error ::拉取 openwrt/packages (master) net/frp/files 失败"
+          exit 1
+        fi
+
+        if git clone --depth=1 --filter=blob:none --sparse -b master https://github.com/openwrt/luci.git /tmp/frp-master-luci \
+          && git -C /tmp/frp-master-luci sparse-checkout set applications/luci-app-frpc applications/luci-app-frps \
+          && [ -f /tmp/frp-master-luci/applications/luci-app-frpc/htdocs/luci-static/resources/view/frpc.js ] \
+          && [ -f /tmp/frp-master-luci/applications/luci-app-frps/htdocs/luci-static/resources/view/frps.js ]; then
+          rm -rf feeds/luci/applications/luci-app-frpc feeds/luci/applications/luci-app-frps
+          cp -a /tmp/frp-master-luci/applications/luci-app-frpc feeds/luci/applications/luci-app-frpc
+          cp -a /tmp/frp-master-luci/applications/luci-app-frps feeds/luci/applications/luci-app-frps
+          echo "::notice ::已同步 openwrt/luci (master) luci-app-frpc / luci-app-frps"
+        else
+          echo "::error ::拉取 openwrt/luci (master) luci-app-frpc / luci-app-frps 失败"
+          exit 1
+        fi
+        rm -rf /tmp/frp-master-pkg /tmp/frp-master-luci
 
         ./scripts/feeds install -a
       
